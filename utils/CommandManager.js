@@ -84,20 +84,21 @@ class CommandManager {
 		//command confirmed existing, continue parsing suffix
 		let suffix = "";
 		let suffixHelper = msg.content.replace(/\n/g, " ").substring(name.length + this.prefix.length + 1).trim().split(" ");;
-		let flags = {"cap": config.data.cap, "missingno": config.data.missingno, "alola": config.data.alola}; //-1 = most recent gen (default)
+		let flags = {"cap": config.data.cap, "missingno": config.data.missingno, "alola": config.data.alola};
 		suffixHelper.forEach((item) => {
 			let isFlag = false;
-			Object.keys(flags).forEach((flag) => {
-				//flags must be boolean
-				if (item.startsWith(this.prefix + flag)){
-					flags[flag] = !flags[flag];
+			if (item.startsWith(config.message.flag_prefix)) {
+				let cutOffPrefix = item.substr(config.message.flag_prefix.length);
+				if (flags.hasOwnProperty(cutOffPrefix)) {
+					flags[cutOffPrefix] = !flags[cutOffPrefix];
 					isFlag = true;
 				}
-			});
+			}			
 			if (!isFlag){
 				suffix += item;
 			}
 		}); 
+		
 		if (this.clean) {
 			suffix = utils.fmt(suffix);
 		}

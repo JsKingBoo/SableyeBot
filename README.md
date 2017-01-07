@@ -1,4 +1,5 @@
-# ![logo](logo.png "logo") SableyeBot
+# ![logo](logo.png "logo") 
+# SableyeBot
 ### Competitive Pokemon Discord bot
 
 ## [Add SableyeBot to your server](https://discordapp.com/oauth2/authorize?&client_id=211522070620667905&scope=bot)
@@ -20,7 +21,7 @@ Please try using a code style consistent with the rest of the project. This incl
  * For indentation, using tabs with a size of `4`
  * Always using brackets for `if` statements, and the opening bracket on the same line of the `if` statement
  * End lines with a semicolon
- * Using template literals (`\``) with strings with variables
+ * Using template literals with strings with variables
  
 Do not worry too much over styling--I will look over your code and may change some lines anyways.
 

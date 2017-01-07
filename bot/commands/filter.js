@@ -238,10 +238,10 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 				continue;
 			}
 			if (flags.alola) {
-				if (!(pokemon.baseSpecies in alolaDex) && !(pokemon.species in alolaDex)){
+				if (!(pokemon.baseSpecies in utils.alolaDex) && !(pokemon.species in utils.alolaDex)){
 					continue;
 				}
-				if (!(pokemon.species in alolaDex)){
+				if (!(pokemon.species in utils.alolaDex)){
 					continue;
 				}
 			}
@@ -257,14 +257,14 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 					}
 					let pokeProp = pokemon[parameter.key];
 					if (typeof pokeProp === "number") {
-						pokeProp = parseInt(pokeProp);
+						//pokeProp = parseInt(pokeProp);
 						parameter.value = parseInt(parameter.value);
 					} else {
 						pokeProp = utils.fmt(pokeProp);
 						//parameter.value = utils.fmt(parameter.value);
 					}
 					if (operatorCompare[parameter.operator](pokeProp, parameter.value)) {
-						fitReq++;
+						fitParameter++;
 					}
 				} else {
 					//Note: some fall down

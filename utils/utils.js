@@ -69,7 +69,7 @@ var levenshtein = function(a, b) {
 * @returns {String} 		 				Formatted string.
 */
 exports.fmt = (str) => {
-	return str.trim().toLowerCase().replace(/[^0-9a-z,=<>!]/gi, '');
+	return str.trim().toLowerCase().replace(/[^0-9a-z,=<>!\-]/gi, '');
 }
 
 /**
