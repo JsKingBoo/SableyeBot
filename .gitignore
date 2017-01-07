@@ -45,3 +45,20 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# =========================
+# Actual things that I want to cut out
+# =========================
+
+#Do not add Showdown database files--these are saved locally to speed up requests
+#https://github.com/Zarel/Pokemon-Showdown/tree/master/data
+/data/*.js
+!/data/natures.js
+/logs/*
+/node_modules
+
+config.json
+
+#old files
+bot/commands.js
+bot/mod_commands.js

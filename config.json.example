@@ -1,0 +1,28 @@
+{
+	"admin": {
+		"token": "",
+		"debug": false,
+		"show_warn": false,
+		"whitelisted_users": [130830896495329280],
+		"blacklist_server_ids": [],
+		"actions_per": 10,
+		"actions_in_sec": 10
+	},
+	"data": {
+		"cap": false,
+		"missingno": false,
+		"alola": false
+	},
+	"message": {
+		"command_prefix": "//",
+		"mod_command_prefix": "!//",
+		"flag_prefix": "--",
+		"max_message_length": 1900,
+		"force_pm": 1000,
+		"errorMessage": "```An unknown error has occured. If this is reproducable, please report this to the owner ASAP.```"
+	},
+	"misc": {
+		"playing_game": "Use //help for assistance",
+		"avatar": "./logo.png"
+	}
+}
