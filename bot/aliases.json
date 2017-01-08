@@ -27,5 +27,8 @@
 	"image": "sprite",
 	"match": "filter",
 	"damangecalc": "calculator",
-	"calc": "calculator"
+	"calc": "calculator",
+	
+	"ls": "listservers",
+	"listserver": "listservers"
 }

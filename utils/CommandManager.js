@@ -178,7 +178,13 @@ class CommandManager {
 						otherNames.push(alias);
 					}
 				}
+				if (otherNames.length === 0) {
+					otherNames.push("-");
+				}
 				utils.sendLongMessage(bot, msg, `Usage: ${this.prefix}${suffix} ${command.usage}\n\t#${command.longDesc || command.desc}\nAliases: ${otherNames.join(", ")}`);	
+			} else if (suffix === "help") { 
+				//Not too happy with this hack
+				msg.channel.sendMessage("```" + `Usage: ${this.prefix}help [command name]\n\t#List all commands, or look up information about another command.\nAliases: -` + "```");
 			} else {
 				msg.channel.sendMessage("```" + `Command ${suffix} not found.` + "```");
 			}
