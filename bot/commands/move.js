@@ -27,7 +27,7 @@ module.exports = {
 		let move = moves[suffix];
 		
 		if (move === undefined){
-			let helper = recognize(suffix, "move");
+			let helper = utils.recognize(suffix, "move");
 			msg.channel.sendMessage("```" + `Move "${suffix}" not recognized. Did you mean "${helper[0]}"?` + "```");
 			move = moves[helper[0]];
 			return;
@@ -54,7 +54,7 @@ ${move.type}; ${move.category}
 			zstring = `(Z: ${move.zMovePower})`;
 		}
 			
-		sendMsg += `Power: ${move.basePower} ${zstring}; Accuracy: ${move.accuracy}; PP: ${move.pp} (max ${move.pp * 1.6})
+		sendMsg += `Power: ${move.basePower} ${zstring}; Accuracy: ${move.accuracy}; PP: ${move.pp} (max ${Math.floor(move.pp * 1.6)})
 ${((move.desc || move.shortDesc) || "No description availible.")}
 ~~
 Priority: ${move.priority}

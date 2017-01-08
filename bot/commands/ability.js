@@ -31,7 +31,7 @@ The sort of ability that defines metagames. ex. Desolate Land, Shadow Tag`,
 		
 		let ability = abilities[suffix];
 		if (ability === undefined){
-			let helper = recognize(suffix, "ability");
+			let helper = utils.recognize(suffix, "ability");
 			msg.channel.sendMessage("```" + `Ability "${suffix}" not recognized. Did you mean "${helper[0]}"?` + "```");
 			ability = abilities[helper[0]];
 			return;

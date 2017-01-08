@@ -15,7 +15,7 @@ module.exports = {
 		let item = items[suffix];
 		
 		if (item === undefined){
-			let helper = recognize(suffix, "item");
+			let helper = utils.recognize(suffix, "item");
 			msg.channel.sendMessage("```" + `Item "${suffix}" not recognized. Did you mean "${helper[0]}"?` + "```");
 			helper = items[helper[0]];
 		}

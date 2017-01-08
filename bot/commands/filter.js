@@ -63,6 +63,7 @@ species - Species name. e.g. "species=sableye",
 baseSpecies - Base form, if applicable. e.g. "baseSpecies=rotom",
 ability - Ability. e.g. "ability=prankster",
 type - Pokemon typing. e.g. "type=ghost",
+monotype - Pokemon typing, except it does not have a secondary typing. e.g. "monotype=ghost",
 move - Move from learnset. e.g. "move=will o wisp",
 hp - Base HP stat. e.g. "hp=50",
 atk - Base ATK stat. e.g. "atk=75",
@@ -152,7 +153,7 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 				continue;
 			}
 			
-			let customs = ["ability", "type", "move", "hp", "atk", "def", "spa", "spd", "spe", "bst","evos","genderratio","egggroups","egggroup","baseforme","otherformes","threshold","threshhold","health","attack","defense","specialattack","specialdefense","speed", "basestattotal","sort"];
+			let customs = ["ability", "type", "monotype", "move", "hp", "atk", "def", "spa", "spd", "spe", "bst","evos","genderratio","egggroups","egggroup","baseforme","otherformes","threshold","threshhold","health","attack","defense","specialattack","specialdefense","speed", "basestattotal","sort"];
 			if (customs.indexOf(parameterTemplate.key) >= 0) {
 				parameterTemplate.hasCustomParsing = true;
 			}
@@ -275,6 +276,9 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 							break;
 						case "type":
 							found = multiValueChecker(parameter.operator, pokemon.types, parameter.value);
+							break;
+						case "monotype":
+							found = operatorCompare[parameter.operator](pokemon.types.length, 1) && multiValueChecker(parameter.operator, pokemon.types, parameter.value);
 							break;
 						case "move":
 							let move = parameter.value;

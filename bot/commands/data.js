@@ -45,8 +45,8 @@ module.exports = {
 		} else if (items[suffix]){
 			itemjs.process(bot, msg, suffix, flags);					
 		} else {
-			let helper = recognize(suffix);
-			msg.channel.sendMessage("```" + `Did not recognize "${suffix}". Did you mean  "${helper[0]}"?` + "```");
+			let helper = utils.recognize(suffix);
+			msg.channel.sendMessage("```" + `Did not recognize "${suffix}". Did you mean "${helper[0]}"?` + "```");
 			let infoCommands = [pokedexjs, abilityjs, movejs, itemjs];
 			let types = ["pokemon", "ability", "move", "item"];
 			infoCommands[types.indexOf(helper[2])].process(bot, msg, helper[0], flags);
