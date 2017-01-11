@@ -64,7 +64,7 @@ baseSpecies - Base form, if applicable. e.g. "baseSpecies=rotom",
 ability - Ability. e.g. "ability=prankster",
 type - Pokemon typing. e.g. "type=ghost",
 monotype - Pokemon typing, except it does not have a secondary typing. e.g. "monotype=ghost",
-move - Move from learnset. e.g. "move=will o wisp",
+move - Move from learnset. Sketch is ignored. e.g. "move=will o wisp",
 hp - Base HP stat. e.g. "hp=50",
 atk - Base ATK stat. e.g. "atk=75",
 def - Base DEF stat. e.g. "def=75",
@@ -286,11 +286,13 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 								found = false;
 								break;
 							}
-							//Smeargle can learn every move except Chatter
-							if (pokemon.species === "Smeargle" && move != "chatter" && operatorCompare[parameter.operator](1, 1)){
+							//Smeargle can learn every move except Chatter. XOR between move="chatter" and operator="="
+							/* Comment out Smeargle case because we are now ignoring Sketch
+							if (pokemon.species === "Smeargle" && ((move === "chatter") != operatorCompare[parameter.operator](1, 1))){
 								found = true;
 								break;
-							}	
+							}
+							*/
 							let infoArray = [];
 							let moveRecurse = (mon) => {
 								if (learnsets[mon] != undefined) {

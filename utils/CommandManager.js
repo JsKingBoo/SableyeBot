@@ -82,9 +82,12 @@ class CommandManager {
 		let command;
 		
 		//command confirmed existing, continue parsing suffix
-		let suffix = "";
-		let suffixHelper = msg.content.replace(/\n/g, " ").substring(name.length + this.prefix.length + 1).trim().split(" ");;
-		let flags = {"cap": config.data.cap, "missingno": config.data.missingno, "alola": config.data.alola};
+		let suffix = [];
+		let suffixHelper = msg.content.replace(/\n/g, " ").substring(name.length + this.prefix.length + 1).trim().split(" ");
+		let flags = {};
+		for (let falg in config.data) {
+			flags[falg] = config.data[falg];
+		}
 		suffixHelper.forEach((item) => {
 			let isFlag = false;
 			if (item.startsWith(config.message.flag_prefix)) {
@@ -95,10 +98,11 @@ class CommandManager {
 				}
 			}			
 			if (!isFlag){
-				suffix += item;
+				suffix.push(item);
 			}
 		}); 
 		
+		suffix = suffix.join(" ");
 		if (this.clean) {
 			suffix = utils.fmt(suffix);
 		}

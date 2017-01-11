@@ -1,3 +1,12 @@
+###2.3.0 - 2017-01-10
+ * Show server ID in `listservers`
+ * Change `learn` and `filter` behavior so Sketch's effects are ignored.
+ * Tweaked how flags are handled
+ * Tweaked pre-formatting so that mod commands can include spaces in their arguments (do not worry; we are responsible)
+ * Add `setstatus` mod command
+ * Add `setgame` mod command
+ * Add `analyzeuser` mod command
+
 ### 2.2.0 - 2017-01-08
  * Fix not correctly parsing Mega Pokemon names
  * Fix versioning numbers, according to Semantic Versioning

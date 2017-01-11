@@ -30,5 +30,8 @@
 	"calc": "calculator",
 	
 	"ls": "listservers",
-	"listserver": "listservers"
+	"listserver": "listservers",
+	"ss": "setstatus",
+	"sg": "setgame",
+	"au": "analyzeuser"
 }

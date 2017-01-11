@@ -9,6 +9,7 @@ module.exports = {
 		msg.channel.sendEmbed({
 			title: "About SableyeBot",
 			description: "Competitive Pokemon Discord bot.",
+			url: "https://github.com/JsKingBoo/SableyeBot",
 			author: {
 				name: "JsKingBoo#8858",
 				icon_url: "http://i.imgur.com/HYJS7kn.png"
