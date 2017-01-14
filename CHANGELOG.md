@@ -1,3 +1,6 @@
+#####2.3.1 - 2017-01-14
+ * Change `data` long description
+
 ###2.3.0 - 2017-01-10
  * Show server ID in `listservers`
  * Change `learn` and `filter` behavior so Sketch's effects are ignored.

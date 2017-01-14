@@ -1,6 +1,6 @@
 {
   "name": "sableyebot",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Competitive Pokemon lookup bot",
   "scripts": {
     "start": "node sableye.js",

@@ -15,7 +15,7 @@ var naturejs = require("./nature.js");
 
 module.exports = {
 	desc: "Helper command for informational commands.",
-	longDesc: "pokedex, ability, move, item, and nature command all in one.",
+	longDesc: "A single command that serves as the pokedex, ability, move, item, and nature commands all in one.",
 	usage: "<Pokemon name>|<ability name>|<move name>|<item name>|<nature name>",
 	process: (bot, msg, suffix, flags) => {
 		if (!suffix){

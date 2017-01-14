@@ -53,7 +53,7 @@ function loadBotEvents() {
 							events[name] = require(`${__dirname}/botEvents/${name}.js`)
 							initBotEvent(name);
 						} catch (e) {
-							console.log(`error: ${e}`);
+							console.log(`loadBotEvents() error: ${e}`);
 						}
 					}
 				}
@@ -90,5 +90,5 @@ loadCommandSets()
 	.then(loadBotEvents)
 	.then(login)
 	.catch(error => {
-		console.log("FATAL ERROR IN INIT" + error);
+		console.log("Fatal error in init " + error);
 	});
