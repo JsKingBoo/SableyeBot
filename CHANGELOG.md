@@ -1,5 +1,6 @@
 #####2.3.1 - 2017-01-14
  * Change `data` long description
+ * Slightly more descriptive error handling
 
 ###2.3.0 - 2017-01-10
  * Show server ID in `listservers`
