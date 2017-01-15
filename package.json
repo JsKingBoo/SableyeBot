@@ -1,6 +1,6 @@
 {
   "name": "sableyebot",
-  "version": "2.3.1",
+  "version": "2.4.0",
   "description": "Competitive Pokemon lookup bot",
   "scripts": {
     "start": "node sableye.js",
@@ -9,10 +9,9 @@
   "author": "JsKingBoo",
   "license": "MIT",
   "dependencies": {
-    "dateformat": "1.0.12",
     "discord.js": "11.0.0",
+    "jsonfile": "^2.4.0",
     "limiter": "1.1.0",
-    "log-timestamp": "0.1.2",
     "node-schedule": "1.1.1"
   }
 }

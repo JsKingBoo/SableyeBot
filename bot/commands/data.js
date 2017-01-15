@@ -19,7 +19,7 @@ module.exports = {
 	usage: "<Pokemon name>|<ability name>|<move name>|<item name>|<nature name>",
 	process: (bot, msg, suffix, flags) => {
 		if (!suffix){
-			return "bad usage";
+			return "bad suffix";
 		} 
 		
 		//preload this so it doesn't break
