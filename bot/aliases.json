@@ -33,5 +33,6 @@
 	"listserver": "listservers",
 	"ss": "setstatus",
 	"sg": "setgame",
-	"au": "analyzeuser"
+	"au": "analyzeuser",
+	"sd": "savedata"
 }

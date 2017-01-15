@@ -1,3 +1,8 @@
+#####2.4.1 - 2017-01-15
+ * Add `savedata` mod command
+ * Fix logging once per minute instead of once per day
+ * Remove unneeded dependencies
+
 ###2.4.0 - 2017-01-15
  * Add logging
  * Fix `data` command not returning usage

@@ -54,7 +54,7 @@ Temporary Items
 #https://github.com/Zarel/Pokemon-Showdown/tree/master/data
 /data/*.js
 !/data/natures.js
-/logs/*
+/logs/*.json
 /node_modules
 
 config.json
@@ -62,3 +62,7 @@ config.json
 #old files
 bot/commands.js
 bot/mod_commands.js
+
+#I add these back if get complaints
+LICENSE-Runecord
+data/LICENSE-PokemonShowdown

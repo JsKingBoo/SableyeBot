@@ -7,7 +7,7 @@ var jsonfile = require("jsonfile");
 
 //files
 var config = require(`${__dirname}/../config.json`);
-const SAVE_FILE_DIR = `${__dirname}/../logs/save.json`;
+const SAVE_FILE_DIR = `${__dirname}/../${config.admin.save_file}`;
 var current_session = {};
 var lifetime_session = {};
 
@@ -31,8 +31,7 @@ if (fs.existsSync(SAVE_FILE_DIR)) {
 
 //Schedule
 var rule = new schedule.RecurrenceRule();
-rule.second = 58;
-//rule.hour = 0;
+rule.hour = 0;
 var j = schedule.scheduleJob(rule, function(){
 	for (let key in current_session) {
 		if (!lifetime_session.hasOwnProperty(key)) {

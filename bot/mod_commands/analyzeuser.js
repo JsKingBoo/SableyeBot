@@ -6,6 +6,10 @@ module.exports = {
 	desc: "Analyze user. Must be called in a channel that the user is part of.",
 	usage: "<user ID>",
 	process: (bot, msg, suffix, flags) => {
+		if (!suffix) {
+			return;
+		}
+		
 		let userID = suffix;
 		
 		let memberList = msg.guild.members;
