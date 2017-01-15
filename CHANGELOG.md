@@ -1,12 +1,17 @@
+###2.4.0 - 2017-01-15
+ * Add logging
+ * Fix `data` command not returning usage
+ * Fix `nature` formatting
+
 #####2.3.1 - 2017-01-14
- * Change `data` long description
+ * Changed `data` long description
  * Slightly more descriptive error handling
 
 ###2.3.0 - 2017-01-10
  * Show server ID in `listservers`
- * Change `learn` and `filter` behavior so Sketch's effects are ignored.
- * Tweaked how flags are handled
- * Tweaked pre-formatting so that mod commands can include spaces in their arguments (do not worry; we are responsible)
+ * Changed `learn` and `filter` behavior so Sketch's effects are ignored.
+ * Changed how flags are handled
+ * Changed pre-formatting so that mod commands can include spaces in their arguments (do not worry; we are responsible)
  * Add `setstatus` mod command
  * Add `setgame` mod command
  * Add `analyzeuser` mod command
@@ -18,7 +23,6 @@
  * Add `listservers` mod command
 
 ### 2.1.0 - 2017-01-08
- * Update changelog like you are supposed to
  * Add monotype to the filter command
  * Fix utils.recognize() not triggering
  * Fix a few typos

@@ -1,6 +1,7 @@
 'use strict';
 
 var config = require(`${__dirname}/../config.json`);
+var Logger = require(`./Logger.js`);
 
 //thanks unlucky4ever/Witty, hearts and kisses
 /**
@@ -69,6 +70,8 @@ class Command {
 		//bad suffix
 		if (result === "bad suffix") {
 			msg.channel.sendMessage("```" + `Usage: ${this.prefix}${this.name} ${this.usage}` + "```");
+		} else {
+			Logger(this.name);
 		}
 	}
 	

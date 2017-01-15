@@ -7,18 +7,19 @@ var fs = require('fs');
 //Files
 var config = require("./config.json");
 var CommandManager = require('./utils/CommandManager.js');
+var Logger = require("./utils/Logger.js");
 
 //Important objects
 var bot = new Discord.Client();
 
-//Local variables
-var logger;
+//"Local" variables
 var events = {};
 var CommandManagers = [];
 
 function loadCommandSets() {
 	return new Promise(resolve => {
 		CommandManagers = [];
+		//Logger.init();
 		CommandManagers.push(new CommandManager(config.message.command_prefix, "bot/commands/"));
 		CommandManagers.push(new CommandManager(config.message.mod_command_prefix, "bot/mod_commands/", false, true));
 		resolve();

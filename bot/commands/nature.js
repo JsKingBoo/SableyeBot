@@ -36,16 +36,16 @@ module.exports = {
 			boost = utils.fmt(suffix.split(",")[0]);
 			hindr = utils.fmt(suffix.split(",")[1]);
 			if (!natures.hasOwnProperty(boost)){
-				msg.channel.sendMessage(`Argument ${boost} not recognized.`);
+				msg.channel.sendMessage("```" + `Argument ${boost} not recognized.` + "```");
 				return;
 			}
 			if (!natures.hasOwnProperty(hindr)){
-				msg.channel.sendMessage(`Argument ${hindr} not recognized.`);
+				msg.channel.sendMessage("```" + `Argument ${hindr} not recognized.` + "```");
 				return;
 			}
 		}
 		nature = natures[boost][hindr];
-		msg.channel.sendMessage(`${nature}: +${boost.toUpperCase()}, -${hindr.toUpperCase()}`);
+		msg.channel.sendMessage("```" + `${nature}: +${boost.toUpperCase()}, -${hindr.toUpperCase()}` + "```");
 	
 	}
 }
