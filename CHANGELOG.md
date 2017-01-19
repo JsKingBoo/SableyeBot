@@ -1,3 +1,6 @@
+#####2.4.2 - 2017-01-18
+ * Add `evolve` command
+
 #####2.4.1 - 2017-01-15
  * Add `savedata` mod command
  * Fix logging once per minute instead of once per day

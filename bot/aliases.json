@@ -28,6 +28,7 @@
 	"match": "filter",
 	"damangecalc": "calculator",
 	"calc": "calculator",
+	"evo": "evolve",
 	
 	"ls": "listservers",
 	"listserver": "listservers",
