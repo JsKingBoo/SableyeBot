@@ -32,7 +32,9 @@ module.exports = {
 					infoArray = infoArray.concat(learnsets[mon].learnset);
 				}
 				if (pokedex[mon].hasOwnProperty("baseSpecies")) {
-					moveRecurse(utils.fmt(pokedex[mon].baseSpecies));
+					if (pokedex[mon].forme != "Alola") {
+						moveRecurse(utils.fmt(pokedex[mon].baseSpecies));
+					}
 				}
 				if (pokedex[mon].hasOwnProperty("prevo")){
 					moveRecurse(pokedex[mon].prevo);
@@ -111,7 +113,10 @@ module.exports = {
 					}
 				}
 				if (pokedex[mon].hasOwnProperty("baseSpecies")) {
-					moveRecurse(utils.fmt(pokedex[mon].baseSpecies), "baseSpecies");
+					//As far as I know, Alolan formes are the only type of formes that do not share movepools.
+					if (pokedex[mon].forme != "Alola") {
+						moveRecurse(utils.fmt(pokedex[mon].baseSpecies), "baseSpecies");
+					}
 				}
 				if (pokedex[mon].hasOwnProperty("prevo")){
 					moveRecurse(pokedex[mon].prevo, "prevo");

@@ -58,6 +58,7 @@ Temporary Items
 /node_modules
 
 config.json
+/configs
 
 #old files
 bot/commands.js

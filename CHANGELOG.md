@@ -1,3 +1,6 @@
+#####2.4.3 - 2017-01-19
+ * Fix `learn` thinking Alolan mons can learn some moves that it actually cannot
+
 #####2.4.2 - 2017-01-18
  * Add `evolve` command
  * Fix `savedata` without prefix
