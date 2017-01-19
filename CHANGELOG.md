@@ -1,5 +1,6 @@
 #####2.4.2 - 2017-01-18
  * Add `evolve` command
+ * Fix `savedata` without prefix
 
 #####2.4.1 - 2017-01-15
  * Add `savedata` mod command
