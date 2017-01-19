@@ -53,7 +53,7 @@ class CommandManager {
 								let command = new Command(name, this.prefix, require(this.directory + name + '.js'), bot);
 								this.commands[name] = command;
 							} catch (e) {
-								console.log(`CommandManager init() error: ${e}`);
+								console.log(`CommandManager init() error: ${e} while parsing ${name}.js`);
 							}
 						}
 					}

@@ -12,9 +12,7 @@ module.exports = {
 	desc: "Get save data.",
 	usage: "<Save name>",
 	process: (bot, msg, suffix, flags) => {
-		if (!suffix) {
-			return;
-		}
+
 		suffix = utils.fmt(suffix);
 		
 		if (fs.existsSync(SAVE_FILE_DIR)) {
@@ -22,7 +20,18 @@ module.exports = {
 				if (err) {
 					console.log(`savedata command error: ${err}`);
 				}
-				if (data.hasOwnProperty(suffix)) {
+				if (!suffix) {
+					let sendMsg = [];
+					let sum = 0;
+					for (let key in data) {
+						sendMsg.push(`${key}: ${data[key]};`);
+						if (typeof data[key] === "number") {
+							sum += data[key];
+						}
+					}
+					sendMsg.push(`\nSUM: ${sum}`);
+					utils.sendLongMessage(bot, msg, sendMsg.join("\n"));
+				} else if (data.hasOwnProperty(suffix)) {
 					msg.channel.sendMessage("```" + `${suffix}: ${data[suffix]}` + "```");
 				}
 			})

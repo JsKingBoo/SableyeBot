@@ -19,7 +19,6 @@ var CommandManagers = [];
 function loadCommandSets() {
 	return new Promise(resolve => {
 		CommandManagers = [];
-		//Logger.init();
 		CommandManagers.push(new CommandManager(config.message.command_prefix, "bot/commands/"));
 		CommandManagers.push(new CommandManager(config.message.mod_command_prefix, "bot/mod_commands/", false, true));
 		resolve();
@@ -73,9 +72,13 @@ function initBotEvent(name) {
 		bot.on('ready', () => {
 			events.ready(bot, config);
 		});
+	} else if (name === 'disconnect') { //Disabled currently
+		bot.on('disconnect', (err) => {
+			events.disconnect(bot, config, err);
+		});
 	} else {
-		bot.on(name, function() {
-			events[name](bot, settingsManager, config, ...arguments);
+		bot.on(name, () => {
+			events[name](bot, config, ...arguments);
 		});
 	}
 }
