@@ -110,7 +110,7 @@ class CommandManager {
 		let validName = false;
 		if (aliases.hasOwnProperty(name)){
 			name = aliases[name];
-			validName = true;
+			//validName = true;
 		}
 		if (name === "help") {
 			validName = true;
