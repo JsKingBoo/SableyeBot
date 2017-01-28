@@ -1,3 +1,8 @@
+#####2.4.4 - 2017-01-28
+ * Fix `move` recognizing Hidden Powers
+ * Fix `learn` not considering Hidden Power [types]
+ * Reconnect improvements
+
 #####2.4.3 - 2017-01-19
  * Fix `learn` thinking Alolan mons can learn some moves that it actually cannot
 
