@@ -30,7 +30,6 @@ module.exports = {
 			let helper = utils.recognize(suffix, "move");
 			msg.channel.sendMessage("```" + `Move "${suffix}" not recognized. Did you mean "${helper[0]}"?` + "```");
 			move = moves[helper[0]];
-			return;
 		}
 
 		

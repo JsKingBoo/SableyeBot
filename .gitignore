@@ -63,6 +63,7 @@ config.json
 #old files
 bot/commands.js
 bot/mod_commands.js
+bot/commands/sudowoodo.js
 
 #I add these back if get complaints
 LICENSE-Runecord
