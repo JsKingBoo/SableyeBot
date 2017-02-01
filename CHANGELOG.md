@@ -1,3 +1,8 @@
+###2.5.0 - 2017-01-31
+ * Fix `filter` producing nonsensical output in console
+ * Add `save` mod command, forcing SableyeBot to instantly save usage information
+ * Recover SableyeBot upon unknown disconnect
+
 #####2.4.4 - 2017-01-28
  * Fix `move` recognizing Hidden Powers
  * Fix `learn` not considering Hidden Power [types]
