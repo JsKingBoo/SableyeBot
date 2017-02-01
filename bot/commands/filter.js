@@ -203,7 +203,6 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 			if (parameterTemplate.key === "threshold" && threshholdObject === undefined){
 				threshholdObject = parameterTemplate;
 				threshholdObject.value = parseInt(threshholdObject.value);
-				console.log("a");
 				sendMsg.push(`[${(parameterIndex+1)}] Looking for Pokemon that satisfy ${threshholdObject.operator}${threshholdObject.value} argument(s).\n`);
 			} else if (parameterTemplate.key === "sort") {
 				parameterTemplate.operator = "=";
@@ -398,11 +397,9 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 		} else {
 			for (let fitIndex = 0; fitIndex < speciesMatch.length; fitIndex++) {
 				//This sublist is not in the threshhold--ignore it (or the length = 0)
-				console.log("b");
 				if (!operatorCompare[threshholdObject.operator](fitIndex, threshholdObject.value) || speciesMatch[fitIndex].length === 0) {
 					continue;
 				}
-				console.log("c");
 				
 				//Sort - shamefully copy-pasted
 				for (let sortIndex = 0; sortIndex < sortParameters.length; sortIndex++) {

@@ -11,14 +11,13 @@ const SAVE_FILE_DIR = `${__dirname}/../${config.admin.save_file}`;
 var current_session = {};
 var lifetime_session = {};
 
-
 //Set up save file
 if (fs.existsSync(SAVE_FILE_DIR)) {
 	jsonfile.readFile(SAVE_FILE_DIR, function(err, data) {
 		if (err) {
 			console.log(`Logger error (save file exists): ${err}`);
 		}
-		lifetime_session = data;
+		lifetime_session = data || {};
 	})
 } else {
 	jsonfile.writeFile(SAVE_FILE_DIR, {}, function(err) {
@@ -33,6 +32,20 @@ if (fs.existsSync(SAVE_FILE_DIR)) {
 var rule = new schedule.RecurrenceRule();
 rule.hour = 0;
 var j = schedule.scheduleJob(rule, function(){
+	forceSave();
+});
+
+/**
+ * Add 1 to command usage
+ */
+function recordUse(command) {
+	if (!current_session.hasOwnProperty(command)) {
+		current_session[command] = 0;
+	}
+	current_session[command]++;
+}
+
+function forceSave() {
 	for (let key in current_session) {
 		if (!lifetime_session.hasOwnProperty(key)) {
 			lifetime_session[key] = current_session[key];
@@ -54,16 +67,9 @@ var j = schedule.scheduleJob(rule, function(){
 	});
 	
 	current_session = {};
-});
-
-/**
- * Add 1 to command usage
- */
-function recordUse(command) {
-	if (!current_session.hasOwnProperty(command)) {
-		current_session[command] = 0;
-	}
-	current_session[command]++;
 }
 
-module.exports = recordUse;
+module.exports = {
+	"record": recordUse,
+	"forceSave": forceSave
+};

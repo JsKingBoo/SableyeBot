@@ -71,7 +71,7 @@ class Command {
 		if (result === "bad suffix") {
 			msg.channel.sendMessage("```" + `Usage: ${this.prefix}${this.name} ${this.usage}` + "```");
 		} else {
-			Logger(this.name);
+			Logger.record(this.name);
 		}
 	}
 	

@@ -88,11 +88,15 @@ function login() {
 	console.log("Launching SableyeBot");
 }
 
-//initiate
-loadCommandSets()
-	.then(initCommandManagers)
-	.then(loadBotEvents)
-	.then(login)
-	.catch(error => {
-		console.log("Fatal error in init " + error);
-	});
+function launch() {
+	//initiate
+	loadCommandSets()
+		.then(initCommandManagers)
+		.then(loadBotEvents)
+		.then(login)
+		.catch(error => {
+			console.log("Fatal error in init " + error);
+		});
+}
+	
+module.exports = launch;
