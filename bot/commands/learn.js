@@ -78,6 +78,10 @@ module.exports = {
 				msg.channel.sendMessage("```" + `Move "${move}" not recognized. Please check your spelling.` + "```");
 				return;
 			}
+			//Convert "hidden power [type]" to just "hidden power"
+			if (move.startsWith("hiddenpower")) {
+				move = "hiddenpower";
+			}
 			let empty = true;
 			let originalPokemon = pokemon;
 			let sourcesObj = {};
