@@ -78,14 +78,19 @@ exports.fmt = (str) => {
 * @arg {Message} 		msg 				The message that triggered the command.
 * @arg {String} 		outputStr 			The message to send to the user.
 * @arg {boolean} 		forcePM 			If true, sends the message through PM/DM regardless of message length.
-* @arg {String} 		splitChar 			The preferred character to split the output string by. So your message doesn't cut a word or sentence in half.
+* @arg {String} 		splitChar 			The preferred character to split the output string by. So your message doesn't cut a word or sentence in half. Default ','
 */
-exports.sendLongMessage = (bot, msg, outputStr, forcePM = false, splitChar = ",") => { //note to self: clean this up later
+exports.sendLongMessage = (bot, msg, outputStr, forcePM, splitChar) => { //note to self: clean this up later
 	if (outputStr.length >= config.message.force_pm || forcePM) {
 		if (msg.guild) {
 			msg.channel.sendMessage(`${msg.author}, sent response via PM.`);
 		}
 		
+		/*
+		* Input an array containing the messages sent, e.g. ["but", "first,", "a", "warm", "up", "shot!"]
+		* "ind" starts at 0
+		* Do not pad messages with ```; padding is automatic
+		*/
 		var timeoutWrapper = (strarr, ind) => {
 			if (ind < strarr.length) {
 				setTimeout(() => {
@@ -95,25 +100,31 @@ exports.sendLongMessage = (bot, msg, outputStr, forcePM = false, splitChar = ","
 			}
 		};
 		
-		let splitter = splitChar || ",";
-		let sendMsgHelper = outputStr.split(splitter);
-		let sendMsgFinal = [[]];
-		let ci = 0;
-		let lengthHelper = 0;
-		for (let i = 0; i < sendMsgHelper.length; i++){
-			if (lengthHelper < config.message.max_message_length){
-				lengthHelper += sendMsgHelper[i].length + splitter.length;
-				sendMsgFinal[ci].push(sendMsgHelper[i]);
+		let splitter = splitChar || ',';
+		let splitArray = outputStr.split(splitter);
+		let sendMsg = [""];
+		
+		//Append subsubstrings (split with splitter) to substring until substring is as large as possible
+		//Then create new substring
+		for (let i = 0; i < splitArray.length; i++){
+			if (sendMsg[sendMsg.length - 1].length + splitArray[i].length <= config.message.max_message_length) {
+				sendMsg[sendMsg.length - 1] += splitArray[i] + splitter;
 			} else {
-				sendMsgFinal.push([]);
-				ci++;
-				lengthHelper = 0;
+				sendMsg.push(splitArray[i] + splitter);
 			}
 		}
-		for (let i = 0; i < sendMsgFinal.length; i++){
-			sendMsgFinal[i] = sendMsgFinal[i].join(splitter);
+		
+		//Remove leading and trailing whitespace on all substrings
+		for (let i = 0; i < sendMsg.length; i++){
+			sendMsg[i] = sendMsg[i].trim();
 		}
-		timeoutWrapper(sendMsgFinal, 0);
+		
+		//Remove last splitter on the last substring, if it exists
+		if (splitter.trim() != "") {
+			sendMsg[sendMsg.length - 1] = sendMsg[sendMsg.length - 1].substr(0, sendMsg[sendMsg.length - 1].length - 1);
+		}
+		
+		timeoutWrapper(sendMsg, 0);
 	} else {
 		msg.channel.sendMessage("```" + outputStr + "```");
 	}
@@ -127,7 +138,7 @@ exports.sendLongMessage = (bot, msg, outputStr, forcePM = false, splitChar = ","
 var parsePokemonName = (input) => {
 	let pokemon = pokedex[input];
 	if (pokemon === undefined){
-		let validPrefix = ["Mega", "Primal"];
+		let validPrefix = ["Mega", "Primal", "Alola"];
 		let movePrefix = (str) => { //str is unformatted species name
 			let returnValue = str;
 			validPrefix.forEach((forme) => {
@@ -206,9 +217,65 @@ exports.recognize = (item, forceType) => {
 	return [bestItem, bestScore, bestType];
 }
 
+/**
+* Returns if and how a Pokemon can learn a move.
+* @arg {String} 		pokemonId 			Pokemon ID. Formatted Pokemon species name.
+* @arg {String} 		moveId	 			Move ID. Formatted move name.
+* @returns {Object}							An object which nests how a Pokemon learns a move by generation, source, and method in that order.
+											Returns null if Pokemon cannot learn the move.
+*/
 
-
-
+exports.learn = (pokemonId, moveId) => {
+	//Convert "hidden power [type]" to simply "hidden power"
+	if (moveId.startsWith("hiddenpower")) {
+		moveId = "hiddenpower";
+	}
+	let empty = true;
+	let sourcesObj = {};
+	let moveRecurse = (mon, src) => {
+		if (learnsets[mon] != undefined) {
+			if (learnsets[mon].learnset.hasOwnProperty(moveId)){
+				learnsets[mon].learnset[moveId].forEach((moveData) => {
+					//Sources are currently "direct", "baseSpecies", and "prevo"
+					empty = false;
+					let gen = moveData.charAt(0);
+					let method = moveData.charAt(1);
+					let lvl = -1;
+					if (method === 'S' || method === 'L') {
+						lvl = moveData.substring(2);
+					}
+					
+					//Generation, source, method. Create nested tree if does not exist.
+					if (!sourcesObj.hasOwnProperty(gen)) {
+						sourcesObj[gen] = {};
+					}
+					if (!sourcesObj[gen].hasOwnProperty(src)) {
+						sourcesObj[gen][src] = {};
+					}
+					if (!sourcesObj[gen][src].hasOwnProperty(method)) {
+						sourcesObj[gen][src][method] = [];
+					}
+					
+					sourcesObj[gen][src][method].push(lvl);
+				});
+			}
+		}
+		if (pokedex[mon].hasOwnProperty("baseSpecies")) {
+			//As far as I know, Alolan formes are the only type of formes that do not share the same movepool from the base species.
+			if (pokedex[mon].forme != "Alola") {
+				moveRecurse(exports.fmt(pokedex[mon].baseSpecies), "baseSpecies");
+			}
+		}
+		if (pokedex[mon].hasOwnProperty("prevo")){
+			moveRecurse(pokedex[mon].prevo, "prevo");
+		}
+	}
+	moveRecurse(pokemonId, "direct");
+	if (empty) {
+		return null;
+	}
+	return sourcesObj;
+}
 
 
 

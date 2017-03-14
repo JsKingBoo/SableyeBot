@@ -20,7 +20,12 @@ module.exports = {
 	usage: "<expression>",
 	process: (bot, msg, suffix, flags) => {
 		try {
-			utils.sendLongMessage(bot, msg, eval(suffix).toString());
+			let output = eval(suffix);
+			if (output.constructor == {}.constructor) {
+				utils.sendLongMessage(bot, msg, JSON.stringify(output, null, 2));
+			} else {
+				utils.sendLongMessage(bot, msg, output.toString());
+			}
 		} catch (e) {
 			utils.sendLongMessage(bot, msg, `Error evaluating command: ${e}`);
 		}

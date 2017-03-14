@@ -23,13 +23,13 @@ class CommandManager {
 	 * @arg {String} 		prefix 			The bot's prefix. 
 	 * @arg {String} 		dir 			Path to load command from, relative to the root directory of the bot.
 	 */
-	constructor(prefix, dir, clean = true, whitelist = false) {
+	constructor(prefix, dir, clean, whitelist) {
 		//dir = "bot/commands" or "bot/mod_commands"
 		this.prefix = prefix;
 		this.directory = `${__dirname}/../${dir}`;
 		this.commands = {};
-		this.clean = clean;
-		this.whitelist = whitelist;
+		this.clean = clean || true;
+		this.whitelist = whitelist || false;
 	}
 	
 	/**
@@ -104,7 +104,10 @@ class CommandManager {
 		
 		suffix = suffix.join(" ");
 		if (this.clean) {
-			suffix = utils.fmt(suffix);
+			//Need to preserve '-' for negative number input
+			//Cannot directly change utils.format because - is needed to parse Pokemon names
+			//e.g. Sableye-Mega
+			suffix = suffix.trim().toLowerCase().replace(/[^0-9a-z,=<>!\-]/gi, '')
 		}
 		//parse name for aliases
 		let validName = false;
@@ -157,7 +160,7 @@ class CommandManager {
 				}
 			}
 			
-			utils.sendLongMessage(bot, msg, sendMsg);
+			utils.sendLongMessage(bot, msg, sendMsg, true, "\n");
 			
 		} else {
 			//Check if suffix is a valid command

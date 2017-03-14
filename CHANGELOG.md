@@ -1,3 +1,14 @@
+###2.6.0 - 2017-03-14
+ * Add `weightcoverage` command
+ * Add `filterm` command
+ * Add evolution and prevolution checking to `filter` command
+ * Fix `filter` command hanging when user inputs multiple threshold arguments
+ * Fix `eval` mod command outputing '[object Object]' when a verbose JSON output is wanted
+ * Fix command parser cleaning '-' character
+ * Fix formatting when sending long messages
+ * Fix saving not self-recovering on error
+ * Change how SableyeBot checks if a Pokemon can learn a move
+
 ###2.5.0 - 2017-01-31
  * Fix `filter` producing nonsensical output in console
  * Add `save` mod command, forcing SableyeBot to instantly save usage information

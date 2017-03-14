@@ -18,6 +18,7 @@ if (fs.existsSync(SAVE_FILE_DIR)) {
 			console.log(`Logger error (save file exists): ${err}`);
 		}
 		lifetime_session = data || {};
+		forceSave();
 	})
 } else {
 	jsonfile.writeFile(SAVE_FILE_DIR, {}, function(err) {

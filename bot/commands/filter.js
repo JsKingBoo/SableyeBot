@@ -74,6 +74,8 @@ spe - Base SPE stat. e.g. "spe=50",
 bst - Base stat total. e.g. "bst=380",
 prevo - Direct previous evolution. Unevolved Pokemon are ignored. e.g. "prevo=wurmple",
 evos - Direct next possible evolutions. Pokemon that cannot evolve further are ignored. e.g. "evos=venusaur",
+hasPrevo - Whether a Pokemon has a prevolution. Non-false values are treated as true. e.g. "hasPrevo=1",
+hasEvo - Whether a Pokemon has an evolution. Non-false values are treated as true. e.g. "hasEvo=1",
 evoLevel - Minimum possible level of an evolved Pokemon. Unevolved Pokemon are ignored. e.g. "evoLevel=16",//genderRatio,
 heightm - Height in meters. e.g. "heightm=0.5",
 weightkg - Weight in kilograms. e.g. "weightkg=11",
@@ -153,7 +155,7 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 				continue;
 			}
 			
-			let customs = ["ability", "type", "monotype", "move", "hp", "atk", "def", "spa", "spd", "spe", "bst","evos","genderratio","egggroups","egggroup","baseforme","otherformes","threshold","threshhold","health","attack","defense","specialattack","specialdefense","speed", "basestattotal","sort"];
+			let customs = ["ability", "type", "monotype", "move", "hp", "atk", "def", "spa", "spd", "spe", "bst","evos","genderratio","egggroups","egggroup","hasprevo", "hasevo", "baseforme","otherformes","threshold","threshhold","health","attack","defense","specialattack","specialdefense","speed", "basestattotal","sort"];
 			if (customs.indexOf(parameterTemplate.key) >= 0) {
 				parameterTemplate.hasCustomParsing = true;
 			}
@@ -186,6 +188,14 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 					case "egggroup":
 						parameterTemplate.key = "eggGroups";
 						break;
+					case "hasprevo":
+						parameterTemplate.key = "hasPrevo";
+						parameterTemplate.value = !!parameterTemplate.value;
+						break;
+					case "hasevo":
+						parameterTemplate.key = "hasEvo";
+						parameterTemplate.value = !!parameterTemplate.value;
+						break;
 					case "otherformes": //NOTE: "otherforms" (without the e in forms) is NOT the same as "otherformes"
 						parameterTemplate.key = "otherFromes";
 						break;
@@ -208,7 +218,7 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 				parameterTemplate.operator = "=";
 				sortParameters.push(parameterTemplate);
 				sendMsg.push(`[${(parameterIndex+1)}] Sorting Pokemon by argument key ${parameterTemplate.value}.\n`);
-			} else {
+			} else if (parameterTemplate.key != "threshold") {
 				parameterList.push(parameterTemplate);
 				sendMsg.push(`[${(parameterIndex+1)}] ${parameterTemplate.key}${parameterTemplate.operator}${parameterTemplate.value}\n`);
 			}			
@@ -285,39 +295,10 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 								found = false;
 								break;
 							}
-							//Smeargle can learn every move except Chatter. XOR between move="chatter" and operator="="
-							/* Comment out Smeargle case because we are now ignoring Sketch
-							if (pokemon.species === "Smeargle" && ((move === "chatter") != operatorCompare[parameter.operator](1, 1))){
-								found = true;
-								break;
-							}
-							*/
-							let infoArray = [];
-							let moveRecurse = (mon) => {
-								if (learnsets[mon] != undefined) {
-									if (learnsets[mon].learnset.hasOwnProperty(move)){
-										infoArray = infoArray.concat(learnsets[mon].learnset[move]);
-									}
-								}
-								if (pokedex[mon].hasOwnProperty("baseSpecies")) {
-									moveRecurse(utils.fmt(pokedex[mon].baseSpecies));
-								}
-								if (pokedex[mon].hasOwnProperty("prevo")){
-									moveRecurse(pokedex[mon].prevo);
-								}
-							}
-							moveRecurse(pokemonKey);
-							let ii = 0;
-							//Remove empty and invalid elements
-							while (ii < infoArray.length){
-								if (infoArray[ii] === undefined || (parseInt(infoArray[ii].charAt(0)) != 7 && flags.alola)){
-									infoArray[ii] = infoArray[infoArray.length - 1];
-									infoArray.pop();
-								} else {
-									ii++;
-								}
-							}
-							found = operatorCompare[parameter.operator](1, 1) ? (infoArray.length > 0) : (infoArray.length === 0);
+							
+							let canLearn = utils.learn(utils.fmt(pokemon.species), move);
+							
+							found = operatorCompare[parameter.operator](1, 1) ? (!!canLearn) : (!canLearn);
 							break;	
 							case "genderRatio":
 								//Too difficult right now because of the whole M/F/N thing
@@ -330,6 +311,12 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 									break;
 								}
 								found = multiValueChecker(parameter.operator, pokemon[parameter.key], parameter.value);
+								break;
+							case "hasPrevo":
+								found = operatorCompare[parameter.operator](parameter.value, pokemon.hasOwnProperty("prevo"));
+								break;
+							case "hasEvo":
+								found = operatorCompare[parameter.operator](parameter.value, pokemon.hasOwnProperty("evos"));
 								break;
 							case "hp":
 							case "atk":

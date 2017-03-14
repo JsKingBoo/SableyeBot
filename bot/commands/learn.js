@@ -78,73 +78,26 @@ module.exports = {
 				msg.channel.sendMessage("```" + `Move "${move}" not recognized. Please check your spelling.` + "```");
 				return;
 			}
-			//Convert "hidden power [type]" to just "hidden power"
-			if (move.startsWith("hiddenpower")) {
-				move = "hiddenpower";
-			}
-			let empty = true;
-			let originalPokemon = pokemon;
-			let sourcesObj = {};
-			let methodName = {E:"egg", S:"event", D:"dream world", L:"level up", M:"TM/HM", T: "tutor", X:"egg, traded back", Y:"event, traded back"};
-			let moveRecurse = (mon, src) => {
-				if (learnsets[mon] != undefined) {
-					if (learnsets[mon].learnset.hasOwnProperty(move)){
-						learnsets[mon].learnset[move].forEach((moveData) => {
-							/*
-							How to create really complicated data structures
-							The move learn source is sorted in a tree by generation, source, then method
-							Sources are currently "direct", "baseSpecies", and "prevo"
-							*/
-							empty = false;							
-							let gen = moveData.charAt(0);
-							let method = moveData.charAt(1);
-							let lvl = -1;
-							if (method === 'S' || method === 'L') {
-								lvl = moveData.substring(2);
-							}
-							
-							if (!sourcesObj.hasOwnProperty(gen)) {
-								sourcesObj[gen] = {};
-							}
-							if (!sourcesObj[gen].hasOwnProperty(src)) {
-								sourcesObj[gen][src] = {};
-							}
-							if (!sourcesObj[gen][src].hasOwnProperty(method)) {
-								sourcesObj[gen][src][method] = [];
-							}
-							sourcesObj[gen][src][method].push(lvl);
-						});
-					}
-				}
-				if (pokedex[mon].hasOwnProperty("baseSpecies")) {
-					//As far as I know, Alolan formes are the only type of formes that do not share movepools.
-					if (pokedex[mon].forme != "Alola") {
-						moveRecurse(utils.fmt(pokedex[mon].baseSpecies), "baseSpecies");
-					}
-				}
-				if (pokedex[mon].hasOwnProperty("prevo")){
-					moveRecurse(pokedex[mon].prevo, "prevo");
-				}
-			}
-			moveRecurse(pokemon, "direct");
-			pokemon = originalPokemon;
+			
+			let canLearn = utils.learn(pokemon, move);
 			
 			let sendMsg = [];
-			if (empty){
+			if (!canLearn){
 				msg.channel.sendMessage("```" + `${pokedex[pokemon].species} cannot learn ${moves[move].name}.` + "```");
 				return;
 			} else {
 				sendMsg.push(`${pokedex[pokemon].species} can learn ${moves[move].name} from:\n`);
 			}
 			
-			for (let gen in sourcesObj) {
+			let methodName = {E:"egg", S:"event", D:"dream world", L:"level up", M:"TM/HM", T: "tutor", X:"egg, traded back", Y:"event, traded back"};
+			for (let gen in canLearn) {
 				sendMsg.push(`Gen${gen}:`);
-				for (let src in sourcesObj[gen]){
+				for (let src in canLearn[gen]){
 					let str = ` > ${src}: `;
 					let methods = [];
-					for (let method in sourcesObj[gen][src]) {
+					for (let method in canLearn[gen][src]) {
 						let lvls = [];
-						sourcesObj[gen][src][method].forEach((lvl) => {
+						canLearn[gen][src][method].forEach((lvl) => {
 							if (lvl >= 0) {
 								lvls.push(lvl);
 							}
@@ -161,6 +114,7 @@ module.exports = {
 					sendMsg.push(str);
 				}
 			}
+			
 			msg.channel.sendMessage("```" + `${sendMsg.join("\n")}` + "```");
 			
 		}
