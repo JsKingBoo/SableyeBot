@@ -28,7 +28,7 @@ class CommandManager {
 		this.prefix = prefix;
 		this.directory = `${__dirname}/../${dir}`;
 		this.commands = {};
-		this.clean = clean || true;
+		this.clean = clean && true;
 		this.whitelist = whitelist || false;
 	}
 	

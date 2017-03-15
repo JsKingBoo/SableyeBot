@@ -1,3 +1,6 @@
+#####2.6.1 - 2017-03-15
+ * Fix CommandManager not defaulting clean to true properly
+
 ###2.6.0 - 2017-03-14
  * Add `weightcoverage` command
  * Add `filterm` command
