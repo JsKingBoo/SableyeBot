@@ -23,13 +23,13 @@ class CommandManager {
 	 * @arg {String} 		prefix 			The bot's prefix. 
 	 * @arg {String} 		dir 			Path to load command from, relative to the root directory of the bot.
 	 */
-	constructor(prefix, dir, clean, whitelist) {
+	constructor(prefix, dir, clean = true, whitelist = false) {
 		//dir = "bot/commands" or "bot/mod_commands"
 		this.prefix = prefix;
 		this.directory = `${__dirname}/../${dir}`;
 		this.commands = {};
-		this.clean = clean && true;
-		this.whitelist = whitelist || false;
+		this.clean = clean;
+		this.whitelist = whitelist;
 	}
 	
 	/**

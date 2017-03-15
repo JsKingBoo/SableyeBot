@@ -19,7 +19,7 @@ var CommandManagers = [];
 function loadCommandSets() {
 	return new Promise(resolve => {
 		CommandManagers = [];
-		CommandManagers.push(new CommandManager(config.message.command_prefix, "bot/commands/"));
+		CommandManagers.push(new CommandManager(config.message.command_prefix, "bot/commands/", true, false));
 		CommandManagers.push(new CommandManager(config.message.mod_command_prefix, "bot/mod_commands/", false, true));
 		resolve();
 	});
