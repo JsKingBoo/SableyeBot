@@ -1,6 +1,6 @@
 'use strict';
 
-var cluster = require("cluster");
+var cluster = require('cluster');
 var sableye = require("./sableye.js");
 
 if (cluster.isMaster) {

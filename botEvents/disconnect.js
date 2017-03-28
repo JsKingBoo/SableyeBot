@@ -7,6 +7,8 @@ module.exports = (bot, config, err) => {
 	} else {
 		process.exit(1);
 	}*/
-	Logger.forceSave();
-	process.exit(1);
+	Logger.forceSave()
+		.then(() => {
+			process.exit(1);
+		});
 }

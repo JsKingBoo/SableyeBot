@@ -8,6 +8,7 @@ module.exports = {
 	process: (bot, msg, suffix, flags) => {
 		if (!suffix){
 			msg.channel.sendMessage("```PokemonShowdown's sprite directory:```\nhttp://play.pokemonshowdown.com/sprites/");
+			return;
 		}
 		let url = "http://play.pokemonshowdown.com/sprites/xyani/";
 		let ending = ".gif";
@@ -15,11 +16,19 @@ module.exports = {
 			url = "http://play.pokemonshowdown.com/sprites/xyani-shiny/";
 			suffix = utils.fmt(suffix.substring(5));
 		}
-		let pokemon = utils.parsePokemonName(suffix)
+		let pokemon = utils.parsePokemonName(suffix);
 		if (!pokemon) {
 			msg.channel.sendMessage("```" + `Pokemon ${suffix} not found` + "```");
+			return;
 		}
-		suffix = pokemon.species.toLowerCase().replace(/ /g, "");
+		
+		//Base species + '-' + forme
+		suffix = (pokemon.baseSpecies || pokemon.species);
+		//Clean extranneous - (Due to Kommo-o)
+		suffix = suffix.replace('-', '').trim();
+		suffix += (pokemon.forme != null ? '-' + pokemon.forme : '');
+		suffix = suffix.toLowerCase();
+		
 		msg.channel.sendMessage(url + suffix + ending);
 		
 	}

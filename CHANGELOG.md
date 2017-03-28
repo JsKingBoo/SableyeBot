@@ -1,3 +1,17 @@
+###2.7.0 - 2017-03-28
+ * Add `updatedb` mod command
+ * Changed `listservers` behavior
+ * Changed logging to use Promises rather than function silently
+ * Changed `save` behavior to be more reliable
+ * Changed `disconnect` behavior to save data more reliably
+ * Fix not correctly parsing Pokemon names with '-' correctly
+ * Fix `filter` not recognizing the 'alola' flag when searching movesets
+ * Fix `ability` not looking up a misspelled input
+ * Fix `sprite` not parsing some Pokemon names correctly
+
+#####2.6.2 - 2017-03-15
+ * Fix CommandManager default variables again
+
 #####2.6.1 - 2017-03-15
  * Fix CommandManager not defaulting clean to true properly
 

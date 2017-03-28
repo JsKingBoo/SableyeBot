@@ -297,6 +297,11 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 							}
 							
 							let canLearn = utils.learn(utils.fmt(pokemon.species), move);
+							if (flags.alola) {
+								if (canLearn) {
+									canLearn = !!canLearn['7'];
+								}
+							}
 							
 							found = operatorCompare[parameter.operator](1, 1) ? (!!canLearn) : (!canLearn);
 							break;	

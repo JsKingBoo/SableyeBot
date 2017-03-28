@@ -68,9 +68,10 @@ var levenshtein = function(a, b) {
 * @arg {String} 		str 				String to be formatted.
 * @returns {String} 		 				Formatted string.
 */
-exports.fmt = (str) => {
+var fmt = (str) => {
 	return str.trim().toLowerCase().replace(/[^0-9a-z,=<>!]/gi, '');
 }
+exports.fmt = fmt;
 
 /**
 * Helper command to split long messages into one or several DM/PMs
@@ -136,6 +137,7 @@ exports.sendLongMessage = (bot, msg, outputStr, forcePM, splitChar) => { //note 
 * @returns {Object}							Pokemon object, or null if no match found.
 */
 var parsePokemonName = (input) => {
+	input = fmt(input).replace('-', '');
 	let pokemon = pokedex[input];
 	if (pokemon === undefined){
 		let validPrefix = ["Mega", "Primal", "Alola"];

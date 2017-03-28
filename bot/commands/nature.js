@@ -1,9 +1,5 @@
 'use strict';
 
-//Dependencies or something
-//none lul
-
-//Essential files
 var utils = require(`${__dirname}/../../utils/utils.js`);
 var natures = require(`${__dirname}/../../data/natures.js`)['BattleNatures'];
 

@@ -6,7 +6,9 @@ module.exports = {
 	desc: `Force save.`,
 	usage: "",
 	process: (bot, msg, suffix, flags) => {
-		Logger.forceSave();
-		msg.channel.sendMessage("```Saved.```");
+		Logger.forceSave()
+			.then((m) => {
+				msg.channel.sendMessage('```' + m + '```');
+			});
 	}
 }
