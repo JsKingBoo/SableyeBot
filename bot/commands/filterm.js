@@ -303,7 +303,12 @@ EXAMPLE: "//filterm bp>60,type=dark,cat=0"
 							break;
 						case "flags":
 						case "zMoveBoost":
-							found = multiValueChecker(parameter.operator, move[parameter.key], parameter.value);
+							if (!!move[parameter.key]) {
+								found = multiValueChecker(parameter.operator, move[parameter.key], parameter.value);
+								break;
+							}
+							//Key does not exist
+							found = !operatorCompare[parameter.operator](1, 1);
 							break;
 						case "drain":
 						case "isViable":

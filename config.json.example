@@ -18,6 +18,7 @@
 		"flag_prefix": "--",
 		"max_message_length": 1900,
 		"force_pm": 1000,
+		"num_pms": 10,
 		"errorMessage": "```An unknown error has occured. If this is reproducable, please report this to the owner ASAP.```"
 	},
 	"misc": {

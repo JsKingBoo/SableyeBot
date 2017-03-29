@@ -93,7 +93,7 @@ exports.sendLongMessage = (bot, msg, outputStr, forcePM, splitChar) => { //note 
 		* Do not pad messages with ```; padding is automatic
 		*/
 		var timeoutWrapper = (strarr, ind) => {
-			if (ind < strarr.length) {
+			if (ind < Math.min(strarr.length, config.message.num_pms)) {
 				setTimeout(() => {
 					msg.author.sendMessage("```" + strarr[ind] + "```")
 					timeoutWrapper(strarr, ind+1);

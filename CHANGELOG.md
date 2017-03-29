@@ -1,3 +1,7 @@
+#####2.7.1 - 2017-03-29
+ * Fix `filterm` not parsing zMoveBoost correctly
+ * Prevent SableyeBot from spamming in PM/DM channels
+ 
 ###2.7.0 - 2017-03-28
  * Add `updatedb` mod command
  * Changed `listservers` behavior
