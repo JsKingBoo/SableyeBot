@@ -56,7 +56,7 @@ accuracy (acc) - Accuracy of move. Set greater than 100 for moves that do not ch
 category (cat) - Category. Options are "physical" (0), "special" (1), or "status" (2). e.g. "category=0",
 powerPoint (pp) - Number of times a move may be used before it runs out of uses. e.g. "pp=10",
 priority - Priority. e.g. "priority=-7",
-flags - Flags. Available options are: authentic, bite, bullet, charge, contact, defrost, distance, gravity, heal, mirror, nonsky, powder, protect, pulse, punch, recharge, reflectable, snatch, sound. e.g. "flags=authentic",
+flags - Flags. Available options are: authentic, bite, bullet, charge, contact, dancer, defrost, distance, gravity, heal, mirror, nonsky, powder, protect, pulse, punch, recharge, reflectable, snatch, sound. e.g. "flags=authentic",
 target - Targeting options. Available options are: normal, allAdjacentFoes, allAdjacent, any, self, adjacentAlly, all, allySide, foeSide, randomNormal. e.g. "target=normal",
 secondaryChance - Chance that the secondary can be applied, in percent. 0 for moves that do not have a secondary effect. e.g. "secondaryChance=100",
 boosts - Increased or decreased stat when used. Available options are: atk, def, spa, spd, spe, evasion, accuracy. e.g. "boost=def",

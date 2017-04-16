@@ -1,3 +1,7 @@
+#####2.7.2 - 2017-04-17
+ * Add dancer to move flags
+ * Change usage syntax for some commands
+
 #####2.7.1 - 2017-03-29
  * Fix `filterm` not parsing zMoveBoost correctly
  * Prevent SableyeBot from spamming in PM/DM channels

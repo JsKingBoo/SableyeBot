@@ -7,7 +7,7 @@ var typechart = require(`${__dirname}/../../data/typechart.js`)['BattleTypeChart
 module.exports = {
 	desc: "Provides a Pokemon's resistances, weaknesses, and immunities, ignoring abilities.",
 	longDesc: "Provides a Pokemon's or a type combination's resistances, weaknesses, and immunities, ignoring abilities. Limited to two types maximum and one type minimum.",
-	usage: "<Pokemon name>|<<type 1>, [type 2]>",
+	usage: "<Pokemon name>|(<type 1>, [type 2])",
 	process: (bot, msg, suffix, flags) => {
 		if (!suffix){
 			return "bad suffix";

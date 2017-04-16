@@ -9,6 +9,9 @@ module.exports = {
 		Logger.forceSave()
 			.then((m) => {
 				msg.channel.sendMessage('```' + m + '```');
+			})
+			.catch((e) => {
+				console.log(`error while saving: ${e}`);
 			});
 	}
 }

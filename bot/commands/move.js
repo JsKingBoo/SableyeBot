@@ -84,6 +84,9 @@ Contest: ${move.contestType}
 		if (move.flags.hasOwnProperty('contact')){
 			sendMsg += "Makes contact. ";
 		}
+		if (move.flags.hasOwnProperty('dance')){
+			sendMsg += "Can be copied by the ability Dancer. ";
+		}
 		if (move.flags.hasOwnProperty('defrost')){
 			sendMsg += "Thaws the user if executed successfully while the user is frozen. ";
 		}

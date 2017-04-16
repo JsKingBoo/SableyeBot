@@ -2,13 +2,14 @@
 
 //Dependencies
 var fs = require('fs');
-var RateLimiter = require("limiter").RateLimiter;
+//var RateLimiter = require('limiter').RateLimiter;
 
 //Files
 var Command = require('./Command.js');
-var utils = require("./utils.js");
+var utils = require('./utils.js');
 var aliases = require(`${__dirname}/../bot/aliases.json`);
 var config = require(`${__dirname}/../config.json`);
+var Logger = require(`./Logger.js`);
 
 /**
  * @class
@@ -196,6 +197,9 @@ class CommandManager {
 				msg.channel.sendMessage("```" + `Command ${suffix} not found.` + "```");
 			}
 		}
+		
+		Logger.record(this.prefix + 'help');
+		
 	}
 	
 }

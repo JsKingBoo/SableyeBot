@@ -5,7 +5,7 @@ var natures = require(`${__dirname}/../../data/natures.js`)['BattleNatures'];
 
 module.exports = {
 	desc: "Gives information on a certain nature, or looks up the name of a specified nature.",
-	usage: "<nature name>|<abbreviated boosted stat>, <abbreviated hindered stat>",
+	usage: "<nature name>|(<abbreviated boosted stat>, <abbreviated hindered stat>)",
 	process: (bot, msg, suffix, flags) => {
 		if (!suffix){
 			return "bad suffix";

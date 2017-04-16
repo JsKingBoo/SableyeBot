@@ -6,7 +6,7 @@ var typechart = require(`${__dirname}/../../data/typechart.js`)['BattleTypeChart
 
 module.exports = {
 	desc: "Gives the IV settings for a certain type, or calculates the Hidden Power type given certain IVs.",
-	usage: "<type>|<<hp IV>,<atk IV>,<def IV>,<spa IV>,<spd IV>,<spe IV>>",
+	usage: "<type>|(<hp IV>,<atk IV>,<def IV>,<spa IV>,<spd IV>,<spe IV>)",
 	process: (bot, msg, suffix, flags) => {
 		if (!suffix){
 			return "bad suffix";

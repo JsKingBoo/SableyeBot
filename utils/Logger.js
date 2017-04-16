@@ -31,10 +31,11 @@ if (fs.existsSync(SAVE_FILE_DIR)) {
 }
 
 //Schedule
-var rule = new schedule.RecurrenceRule();
-rule.hour = 0;
-var j = schedule.scheduleJob(rule, function(){
-	forceSave();
+var j = schedule.scheduleJob({hour: 0}, function(){
+	forceSave()
+		.catch((e) => {
+			console.log(`error during scheduled forceSave: ${e}`);
+		});
 });
 
 /**

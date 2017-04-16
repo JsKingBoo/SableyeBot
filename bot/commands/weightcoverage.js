@@ -7,7 +7,7 @@ var typechart = require(`${__dirname}/../../data/typechart.js`)['BattleTypeChart
 module.exports = {
 	desc: "Provides coverage versus all current Pokemon typings.",
 	longDesc: "Provides a Pokemon's or a moveset's coverage versus all current Pokemon typings, ignoring abilities.",
-	usage: "<Pokemon name>|<<type 1>, [type 2], [type 3], [type 4]>",
+	usage: "<Pokemon name>|(<type 1>, [type 2], [type 3], [type 4])",
 	process: (bot, msg, suffix, flags) => {
 		if (!suffix){
 			return "bad suffix";
