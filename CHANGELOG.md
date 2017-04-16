@@ -1,6 +1,8 @@
 #####2.7.2 - 2017-04-17
  * Add dancer to move flags
+ * Add additional logging to saving functions	
  * Change usage syntax for some commands
+ * Fix logging not recording help commands
 
 #####2.7.1 - 2017-03-29
  * Fix `filterm` not parsing zMoveBoost correctly
