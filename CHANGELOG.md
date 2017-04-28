@@ -1,14 +1,14 @@
-#####2.7.2 - 2017-04-17
+##### 2.7.2 - 2017-04-17
  * Add dancer to move flags
  * Add additional logging to saving functions	
  * Change usage syntax for some commands
  * Fix logging not recording help commands
 
-#####2.7.1 - 2017-03-29
+##### 2.7.1 - 2017-03-29
  * Fix `filterm` not parsing zMoveBoost correctly
  * Prevent SableyeBot from spamming in PM/DM channels
  
-###2.7.0 - 2017-03-28
+### 2.7.0 - 2017-03-28
  * Add `updatedb` mod command
  * Changed `listservers` behavior
  * Changed logging to use Promises rather than function silently
@@ -19,13 +19,13 @@
  * Fix `ability` not looking up a misspelled input
  * Fix `sprite` not parsing some Pokemon names correctly
 
-#####2.6.2 - 2017-03-15
+##### 2.6.2 - 2017-03-15
  * Fix CommandManager default variables again
 
-#####2.6.1 - 2017-03-15
+##### 2.6.1 - 2017-03-15
  * Fix CommandManager not defaulting clean to true properly
 
-###2.6.0 - 2017-03-14
+### 2.6.0 - 2017-03-14
  * Add `weightcoverage` command
  * Add `filterm` command
  * Add evolution and prevolution checking to `filter` command
@@ -36,38 +36,38 @@
  * Fix saving not self-recovering on error
  * Change how SableyeBot checks if a Pokemon can learn a move
 
-###2.5.0 - 2017-01-31
+### 2.5.0 - 2017-01-31
  * Fix `filter` producing nonsensical output in console
  * Add `save` mod command, forcing SableyeBot to instantly save usage information
  * Recover SableyeBot upon unknown disconnect
 
-#####2.4.4 - 2017-01-28
+##### 2.4.4 - 2017-01-28
  * Fix `move` recognizing Hidden Powers
  * Fix `learn` not considering Hidden Power [types]
  * Reconnect improvements
 
-#####2.4.3 - 2017-01-19
+##### 2.4.3 - 2017-01-19
  * Fix `learn` thinking Alolan mons can learn some moves that it actually cannot
 
-#####2.4.2 - 2017-01-18
+##### 2.4.2 - 2017-01-18
  * Add `evolve` command
  * Fix `savedata` without prefix
 
-#####2.4.1 - 2017-01-15
+##### 2.4.1 - 2017-01-15
  * Add `savedata` mod command
  * Fix logging once per minute instead of once per day
  * Remove unneeded dependencies
 
-###2.4.0 - 2017-01-15
+### 2.4.0 - 2017-01-15
  * Add logging
  * Fix `data` command not returning usage
  * Fix `nature` formatting
 
-#####2.3.1 - 2017-01-14
+##### 2.3.1 - 2017-01-14
  * Changed `data` long description
  * Slightly more descriptive error handling
 
-###2.3.0 - 2017-01-10
+### 2.3.0 - 2017-01-10
  * Show server ID in `listservers`
  * Changed `learn` and `filter` behavior so Sketch's effects are ignored.
  * Changed how flags are handled
