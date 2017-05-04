@@ -31,14 +31,14 @@ class Command {
 	 * @arg {Boolean} 		[cmd.do_not_display=false]
 	 * @arg {Boolean} 		[cmd.ownerOnly=false]
 	 * @arg {Function} 		[cmd.destroy] 	A function that runs at destruction.
-	 * @arg {Client} 		bot 			The client.
 	 */
-	constructor(name, prefix, cmd, bot) {
+	constructor(name, prefix, cmd) {
 		this.name = name;
 		this.prefix = prefix;
 		this.usage = cmd.usage || "";
 		this.desc = cmd.desc || "No description.";
-		this.longDesc = cmd.longDesc || this.desc;		
+		this.longDesc = cmd.longDesc || this.desc;	
+		this.options = cmd.options;
 		this.process = cmd.process;
 		this.do_not_display = !!cmd.do_not_display;
 		this.ownerOnly = !!cmd.ownerOnly;

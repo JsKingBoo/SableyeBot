@@ -14,14 +14,13 @@ module.exports = {
 			return "bad suffix";
 		}
 		let pokemon = suffix.split(",")[0];
-
-		let move = suffix.split(",")[1];
 		if (utils.parsePokemonName(pokemon) === undefined){
 			msg.channel.sendMessage("```" + `Pokemon "${pokemon}" not recognized. Please check your spelling.` + "```");
 			return;
 		}
 		pokemon = utils.fmt(utils.parsePokemonName(pokemon).species);
 		
+		let move = suffix.split(",")[1];
 		if (!move) { //spit out learnset
 			//move to base species and previous			
 			let originalPokemon = pokemon
@@ -89,7 +88,7 @@ module.exports = {
 				sendMsg.push(`${pokedex[pokemon].species} can learn ${moves[move].name} from:\n`);
 			}
 			
-			let methodName = {E:"egg", S:"event", D:"dream world", L:"level up", M:"TM/HM", T: "tutor", X:"egg, traded back", Y:"event, traded back"};
+		let methodName = {E:"egg", S:"event", D:"dream world", L:"level up", M:"TM/HM", T: "tutor", X:"egg, traded back", Y:"event, traded back", V:"VC transfer from gen1"};
 			for (let gen in canLearn) {
 				sendMsg.push(`Gen${gen}:`);
 				for (let src in canLearn[gen]){
@@ -107,6 +106,9 @@ module.exports = {
 						} else {
 							lvls.sort((a, b) => { return a - b; })
 							lvls = ` (${lvls.join(",")})`;
+						}
+						if (!methodName[method]) {
+							methodName[method] = `Unknown method "${method}"`;
 						}
 						methods.push(`${methodName[method]}${lvls}`);
 					}

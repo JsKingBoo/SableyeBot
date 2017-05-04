@@ -1,7 +1,8 @@
 'use strict';
 
 //Dependencies or something
-//none lul
+var http = require('http');
+var url = require('url');
 
 //Essential files
 var config = require(`${__dirname}/../config.json`)
@@ -62,6 +63,27 @@ var levenshtein = function(a, b) {
 	}
 	return row[a.length];
 }	
+
+/**
+* Checks if a URL exists.
+* @arg {String} 		urlchk 				URL to check
+* @returns {String} 		 				Formatted string.
+*/
+exports.checkUrlExists = function (urlchk) { 
+	return new Promise(function(resolve, reject) {
+		let options = {
+			method: 'HEAD',
+			hostname: url.parse(urlchk).host,
+			path: url.parse(urlchk).pathname,
+			port: 80
+		};
+		let req = http.request(options, function (res) {
+			resolve(res.statusCode == 200);
+		});
+		req.end();
+	});
+	
+}
 
 /**
 * Function that ensures that strings only contain alphanumeric characters or commas.

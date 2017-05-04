@@ -89,6 +89,7 @@ sort - The argument that the list will be sorted by in ascending order. e.g. "so
 EXAMPLE: "//filter hp=50,atk>=75,color=purple,formeLetter=m,eggGroups=humanlike"
 NOTE: Some move and/or ability combinations are not compatible. Despite this, the Pokemon may still appear because they do satisfy the two or more requirements. For example, "//filter ability=unaware,move=softboiled" brings up Clefable even though Unaware Clefable cannot learn Soft-boiled.`,
 	usage: "<parameter list>",
+	options: {missingno: false, cap: false, alola: false},
 	process: (bot, msg, suffix, flags) => {		
 		if (!suffix){
 			return "bad suffix";

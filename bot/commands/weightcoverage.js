@@ -8,6 +8,7 @@ module.exports = {
 	desc: "Provides coverage versus all current Pokemon typings.",
 	longDesc: "Provides a Pokemon's or a moveset's coverage versus all current Pokemon typings, ignoring abilities.",
 	usage: "<Pokemon name>|(<type 1>, [type 2], [type 3], [type 4])",
+	options: {missingno: false, cap: false, alola: false},
 	process: (bot, msg, suffix, flags) => {
 		if (!suffix){
 			return "bad suffix";
@@ -88,7 +89,7 @@ module.exports = {
 		}
 		
 		let sendMsg = [];
-		sendMsg.push(`${input.join(", ")}:`);
+		sendMsg.push(`${input.join(", ")}: ${pokemon ? "(" + pokemon.species + ")" : ""}`);
 		for (let bucket in buckets) {
 			sendMsg.push(`x${bucket}: ${buckets[bucket]}`);
 		}		

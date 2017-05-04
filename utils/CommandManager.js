@@ -40,6 +40,7 @@ class CommandManager {
 	 */
 	init(bot) {
 		return new Promise((resolve, reject) => {
+			this.commands['help'] = new Command('help', this.prefix, {options: {}});
 			fs.readdir(this.directory, (err, files) => {
 				if (err) {
 					reject(`Error reading commands directory: ${err}`);
@@ -51,7 +52,7 @@ class CommandManager {
 						if (name.endsWith('.js')) {
 							try {
 								name = name.replace(/\.js$/, '');
-								let command = new Command(name, this.prefix, require(this.directory + name + '.js'), bot);
+								let command = new Command(name, this.prefix, require(this.directory + name + '.js'));
 								this.commands[name] = command;
 							} catch (e) {
 								console.log(`CommandManager init() error: ${e} while parsing ${name}.js`);
@@ -78,50 +79,18 @@ class CommandManager {
 		}
 		
 		//parsing the following message
-		// {prefix}{name} {suffix+flags}
+		//{prefix}{name} {suffix+flags}
 		let name = msg.content.split(" ")[0].replace(/\n/g, " ").substring(this.prefix.length).toLowerCase();
 		let command;
 		
-		//command confirmed existing, continue parsing suffix
-		let suffix = [];
-		let suffixHelper = msg.content.replace(/\n/g, " ").substring(name.length + this.prefix.length + 1).trim().split(" ");
-		let flags = {};
-		for (let falg in config.data) {
-			flags[falg] = config.data[falg];
-		}
-		suffixHelper.forEach((item) => {
-			let isFlag = false;
-			if (item.startsWith(config.message.flag_prefix)) {
-				let cutOffPrefix = item.substr(config.message.flag_prefix.length);
-				if (flags.hasOwnProperty(cutOffPrefix)) {
-					flags[cutOffPrefix] = !flags[cutOffPrefix];
-					isFlag = true;
-				}
-			}			
-			if (!isFlag){
-				suffix.push(item);
-			}
-		}); 
-		
-		suffix = suffix.join(" ");
-		if (this.clean) {
-			//Need to preserve '-' for negative number input
-			//Cannot directly change utils.format because - is needed to parse Pokemon names
-			//e.g. Sableye-Mega
-			suffix = suffix.trim().toLowerCase().replace(/[^0-9a-z,=<>!\-]/gi, '')
-		}
 		//parse name for aliases
 		let validName = false;
-		if (aliases.hasOwnProperty(name)){
-			name = aliases[name];
-			//validName = true;
-		}
 		if (name === "help") {
 			validName = true;
 		}
 		//search if name is a valid command
 		for (let key in this.commands) {
-			if (key === name) {
+			if (key === name || key === aliases[name]) {
 				command = this.commands[key];
 				validName = true;
 				break;
@@ -129,6 +98,36 @@ class CommandManager {
 		}
 		if (!validName) {
 			return;
+		}
+		
+		//command confirmed existing, continue parsing suffix
+		let suffix = [];
+		let suffixHelper = msg.content.replace(/\n/g, " ").substring(name.length + this.prefix.length + 1).split(" ");
+		
+		//copy
+		let flags = Object.assign({}, command.options || {});
+		suffixHelper.forEach((item) => {
+			item = item.trim();
+			let isFlag = false;
+			if (item.startsWith(config.message.flag_prefix)) {
+				let parsedFlag = item.substr(config.message.flag_prefix.length);
+				if (flags.hasOwnProperty(parsedFlag)) {
+					flags[parsedFlag] = !flags[parsedFlag];
+					isFlag = true;
+				}
+			}			
+			if (!isFlag){
+				suffix.push(item);
+			}
+		});
+		
+		suffix = suffix.join(" ");
+		
+		if (this.clean) {
+			//Need to preserve '-' for negative number input
+			//Cannot directly change utils.format because - is needed to parse Pokemon names
+			//e.g. Sableye-Mega
+			suffix = suffix.trim().toLowerCase().replace(/[^0-9a-z,=<>!\-]/gi, '')
 		}
 	
 		if (name === 'help') {
@@ -189,7 +188,15 @@ class CommandManager {
 				if (otherNames.length === 0) {
 					otherNames.push("-");
 				}
-				utils.sendLongMessage(bot, msg, `Usage: ${this.prefix}${suffix} ${command.usage}\n\t#${command.longDesc || command.desc}\nAliases: ${otherNames.join(", ")}`);	
+				let flags = [];
+				for (let flag in command.options) {
+					flags.push(flag);
+				}
+				flags = flags.join(', ');
+				if (flags.length > 0) {
+					flags = '\nOptions: ' + flags;
+				}
+				utils.sendLongMessage(bot, msg, `Usage: ${this.prefix}${suffix} ${command.usage}\n\t#${command.longDesc || command.desc}\nAliases: ${otherNames.join(", ")}${flags}`);	
 			} else if (suffix === "help") { 
 				//Not too happy with this hack
 				msg.channel.sendMessage("```" + `Usage: ${this.prefix}help [command name]\n\t#List all commands, or look up information about another command.\nAliases: -` + "```");

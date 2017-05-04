@@ -1,3 +1,10 @@
+### 2.8.0 - 2017-05-04
+ * Add back, shiny, and female sprites.
+ * Add Pokemon name in output for `weakness`, `coverage`, and `weightcoverage`
+ * Update options system: affects `filter`, `sprite`, and `weightcoverage`
+ * Fix `learn` not recognizing moves learned from gen 1 virtual console transfers
+ * Remove `commands` alias for `help`
+
 ##### 2.7.2 - 2017-04-17
  * Add dancer to move flags
  * Add additional logging to saving functions	

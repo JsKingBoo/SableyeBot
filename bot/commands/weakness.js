@@ -76,7 +76,7 @@ module.exports = {
 		}
 		
 		let sendMsg = [];
-		sendMsg.push(`${input.join(", ")}:`);
+		sendMsg.push(`${input.join(", ")}: ${pokemon ? "(" + pokemon.species + ")" : ""}`);
 		for (let bucket in buckets) {
 			sendMsg.push(`x${bucket}: ${buckets[bucket].join(", ")}`);
 		}		

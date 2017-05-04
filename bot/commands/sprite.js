@@ -4,32 +4,59 @@ var utils = require(`${__dirname}/../../utils/utils.js`);
 
 module.exports = {
 	desc: "Returns an image link to the specified Pokemon, or the sprite directory if no argument is given. This uses PokemonShowdown's sprite library.",
-	usage: "[\"shiny\"] [Pokemon name]",
+	usage: "[Pokemon name]",
+	options: {shiny: false, back: false, female: false, afd: false},
 	process: (bot, msg, suffix, flags) => {
-		if (!suffix){
+		
+		if (!suffix) {
 			msg.channel.sendMessage("```PokemonShowdown's sprite directory:```\nhttp://play.pokemonshowdown.com/sprites/");
 			return;
 		}
-		let url = "http://play.pokemonshowdown.com/sprites/xyani/";
-		let ending = ".gif";
-		if (suffix.startsWith("shiny")) {
-			url = "http://play.pokemonshowdown.com/sprites/xyani-shiny/";
-			suffix = utils.fmt(suffix.substring(5));
-		}
+		
 		let pokemon = utils.parsePokemonName(suffix);
 		if (!pokemon) {
-			msg.channel.sendMessage("```" + `Pokemon ${suffix} not found` + "```");
+			msg.channel.sendMessage('```' + `Pokemon ${suffix} not found` + '```');
+			if (suffix.toLowerCase().startsWith('shiny')) {
+				msg.channel.sendMessage('```Retrieving shiny sprites has been updated. You must now append the --shiny flag to your search. Other flag options are available.\ne.g. "sableye --shiny" "sableye --back" "sableye --shiny --back"```');
+			}
 			return;
 		}
 		
 		//Base species + '-' + forme
-		suffix = (pokemon.baseSpecies || pokemon.species);
-		//Clean extranneous - (Due to Kommo-o)
-		suffix = suffix.replace('-', '').trim();
-		suffix += (pokemon.forme != null ? '-' + pokemon.forme : '');
-		suffix = suffix.toLowerCase();
+		//Clean extranneous '-' (Due to Kommo-o)
+		let name = ((pokemon.baseSpecies || pokemon.species).replace('-', '').trim() + (pokemon.forme != null ? '-' + pokemon.forme : '')).toLowerCase();
 		
-		msg.channel.sendMessage(url + suffix + ending);
+		let url = 'http://play.pokemonshowdown.com/sprites/';
+		let dir = '';
+		
+		if (flags.back) {
+			dir = '-back';
+		}
+		if (flags.shiny) {
+			dir += '-shiny';
+		}
+		if (flags.afd) {
+			dir = 'afd' + dir;
+			msg.channel.sendMessage(url + dir + '/' + name + '.png');
+			return;
+		}
+		
+		dir = 'xyani' + dir;
+		let path = url + dir + '/' + name;
+		if (flags.female) {
+			utils.checkUrlExists(path + '-f' + '.gif')
+				.then((b) => {
+					if (b) {
+						msg.channel.sendMessage(path + '-f' + '.gif');
+						return;
+					} else {
+						//:(
+						msg.channel.sendMessage(path + '.gif');
+					}
+				});
+		} else {
+			msg.channel.sendMessage(path + '.gif');
+		}
 		
 	}
 }
