@@ -6,9 +6,9 @@ var typechart = require(`${__dirname}/../../data/typechart.js`)['BattleTypeChart
 
 module.exports = {
 	desc: "Provides coverage versus all current Pokemon typings.",
-	longDesc: "Provides a Pokemon's or a moveset's coverage versus all current Pokemon typings, ignoring abilities.",
+	longDesc: "Provides a Pokemon's or a moveset's coverage versus all current Pokemon typings. Use the abilities flag to include immunities to abilities. Note that Pokemon with two immunity abilities (such as Lanturn) will count both.",
 	usage: "<Pokemon name>|(<type 1>, [type 2], [type 3], [type 4])",
-	options: {missingno: false, cap: false, alola: false},
+	options: {cap: false, alola: false, abilities: false},
 	process: (bot, msg, suffix, flags) => {
 		if (!suffix){
 			return "bad suffix";
@@ -59,7 +59,8 @@ module.exports = {
 			if (!flags.cap && pokemon.num < 0){
 				continue;
 			}
-			if (!flags.missingno && pokemon.num === 0){
+			if (pokemon.num === 0){
+				//No data available
 				continue;
 			}
 			if (flags.alola) {
@@ -73,10 +74,51 @@ module.exports = {
 			
 			let maxEffective = -1.0;
 			input.forEach((type) => {
+				
 				let testMax = 1.0;
-				for (let typing of pokemon.types) {
-					testMax *= effectivenessHelper(typechart[typing].damageTaken[type]);
-				}	
+				
+				if (flags.abilities) {
+					switch (type) {
+						case 'Water':
+							if (abilitySearch(pokemon.abilities, 'Storm Drain') > -1 || abilitySearch(pokemon.abilities, 'Water Absorb') > -1 || abilitySearch(pokemon.abilities, 'Dry Skin') > -1) {
+								testMax = 0.0;
+							}
+							break;
+						case 'Fire':
+							if (abilitySearch(pokemon.abilities, 'Flash Fire') > -1) {
+								testMax = 0.0;
+							}
+							break;
+						case 'Grass':
+							if (abilitySearch(pokemon.abilities, 'Sap Sipper') > -1) {
+								testMax = 0.0;
+							}
+							break;
+						case 'Electric':
+							if (abilitySearch(pokemon.abilities, 'Motor Drive') > -1 || abilitySearch(pokemon.abilities, 'Volt Absorb') > -1 || abilitySearch(pokemon.abilities, 'Lightning Rod') > -1) {
+								testMax = 0.0;
+							}
+							break;
+						case 'Ground':
+							if (abilitySearch(pokemon.abilities, 'Levitate') > -1) {
+								testMax = 0.0;
+							}
+							break;
+						default:
+							break;
+					}
+				}
+				
+				if (testMax > 0) {
+					for (let typing of pokemon.types) {
+						testMax *= effectivenessHelper(typechart[typing].damageTaken[type]);
+					}	
+				}
+				
+				if (flags.abilities && testMax <= 1.0 && abilitySearch(pokemon.abilities, 'Wonder Guard')) {
+					testMax = 0.0;
+				}
+				
 				maxEffective = Math.max(testMax, maxEffective);
 			});
 			total++;
@@ -89,6 +131,9 @@ module.exports = {
 		}
 		
 		let sendMsg = [];
+		if (flags.abilities) {
+			sendMsg.push('Accounting for immunities from abilities.');
+		}
 		sendMsg.push(`${input.join(", ")}: ${pokemon ? "(" + pokemon.species + ")" : ""}`);
 		for (let bucket in buckets) {
 			sendMsg.push(`x${bucket}: ${buckets[bucket]}`);
@@ -97,7 +142,9 @@ module.exports = {
 	}
 }
 
-
+let abilitySearch = (aObj, aName) => {
+	return (aObj['0'] === aName || aObj['1'] === aName || aObj['H'] === aName);
+}
 
 
 

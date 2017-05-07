@@ -1,3 +1,8 @@
+##### 2.8.1 - 2017-05-07
+ * Fix `filter` not recognizing false values
+ * Fix outdated config.json.example
+ * Remove 'missingno' flag in `weightcoverage`
+
 ### 2.8.0 - 2017-05-04
  * Add back, shiny, and female sprites.
  * Add Pokemon name in output for `weakness`, `coverage`, and `weightcoverage`

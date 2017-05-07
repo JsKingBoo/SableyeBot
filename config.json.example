@@ -7,11 +7,6 @@
 		"actions_per": 10,
 		"actions_in_sec": 10
 	},
-	"data": {
-		"cap": false,
-		"missingno": false,
-		"alola": false
-	},
 	"message": {
 		"command_prefix": "//",
 		"mod_command_prefix": "!//",

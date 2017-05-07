@@ -55,6 +55,14 @@ let multiValueChecker = (operator, multiValue, value) => {
 	return !isEqual;
 };
 
+let falseValues = {
+	'false': false,
+	'0': false,
+	'null': false,
+	'undefined': false,
+	'': false
+};
+
 module.exports = {
 	desc: "Search Pokemon based on user-inputted parameters.",
 	longDesc: `Search Pokemon based on user-inputted parameters. Availible parameters are:
@@ -191,11 +199,11 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 						break;
 					case "hasprevo":
 						parameterTemplate.key = "hasPrevo";
-						parameterTemplate.value = !!parameterTemplate.value;
+						parameterTemplate.value = !falseValues.hasOwnProperty(parameterTemplate.value);
 						break;
 					case "hasevo":
 						parameterTemplate.key = "hasEvo";
-						parameterTemplate.value = !!parameterTemplate.value;
+						parameterTemplate.value = !falseValues.hasOwnProperty(parameterTemplate.value);
 						break;
 					case "otherformes": //NOTE: "otherforms" (without the e in forms) is NOT the same as "otherformes"
 						parameterTemplate.key = "otherFromes";
