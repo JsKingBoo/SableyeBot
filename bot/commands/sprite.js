@@ -43,6 +43,7 @@ module.exports = {
 		
 		dir = 'xyani' + dir;
 		let path = url + dir + '/' + name;
+		path = path.replace(' ', '');
 		if (flags.female) {
 			utils.checkUrlExists(path + '-f' + '.gif')
 				.then((b) => {

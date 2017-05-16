@@ -1,3 +1,6 @@
+##### 2.8.2 - 2017-05-17
+ * Fix `sprite` not removing spaces
+
 ##### 2.8.1 - 2017-05-07
  * Fix `filter` not recognizing false values
  * Fix outdated config.json.example
