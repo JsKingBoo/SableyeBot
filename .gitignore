@@ -56,6 +56,7 @@ Temporary Items
 data/*.json
 !/data/natures.js
 /logs/*.json
+/logs/*.txt
 /node_modules
 
 config.json
