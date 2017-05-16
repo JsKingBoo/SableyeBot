@@ -24,7 +24,10 @@ module.exports = {
 		
 		//Base species + '-' + forme
 		//Clean extranneous '-' (Due to Kommo-o)
-		let name = ((pokemon.baseSpecies || pokemon.species).replace('-', '').trim() + (pokemon.forme != null ? '-' + pokemon.forme : '')).toLowerCase();
+		//                  ' ' (Due to Tapus)
+		//                  ':' (Due to Type:Null)
+		let name = ((pokemon.baseSpecies || pokemon.species).replace('-', '').replace(' ', '').replace(':', '').trim() + (pokemon.forme != null ? '-' + pokemon.forme : '')).toLowerCase();
+		//There has to be a better way
 		
 		let url = 'http://play.pokemonshowdown.com/sprites/';
 		let dir = '';
@@ -43,7 +46,6 @@ module.exports = {
 		
 		dir = 'xyani' + dir;
 		let path = url + dir + '/' + name;
-		path = path.replace(' ', '');
 		if (flags.female) {
 			utils.checkUrlExists(path + '-f' + '.gif')
 				.then((b) => {
