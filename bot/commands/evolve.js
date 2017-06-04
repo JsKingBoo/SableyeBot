@@ -15,8 +15,8 @@ module.exports = {
 		let pokemon = utils.parsePokemonName(suffix);
 		if (pokemon === undefined){
 			let helper = utils.recognize(suffix, "pokemon");
-			msg.channel.sendMessage("```" + `Pokemon "${suffix}" not recognized. Did you mean "${helper[0]}"?` + "```");
-			pokemon = pokedex[helper[0]];
+			msg.channel.sendMessage("```" + `Pokemon "${suffix}" not recognized. Did you mean "${helper.item.species}"?` + "```");
+			pokemon = helper.item;
 		}
 		
 		let sendMsg = [];

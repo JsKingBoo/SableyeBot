@@ -18,9 +18,10 @@ module.exports = {
 			msg.channel.sendMessage("```" + `Pokemon "${pokemon}" not recognized. Please check your spelling.` + "```");
 			return;
 		}
-		pokemon = utils.fmt(utils.parsePokemonName(pokemon).species);
+		pokemon = utils.parsePokemonName(pokemon).species.toLowerCase().replace(/[^0-9a-z]/gi, '');
 		
 		let move = suffix.split(",")[1];
+		
 		if (!move) { //spit out learnset
 			//move to base species and previous			
 			let originalPokemon = pokemon
@@ -32,7 +33,7 @@ module.exports = {
 				}
 				if (pokedex[mon].hasOwnProperty("baseSpecies")) {
 					if (pokedex[mon].forme != "Alola") {
-						moveRecurse(utils.fmt(pokedex[mon].baseSpecies));
+						moveRecurse(pokedex[mon].baseSpecies.toLowerCase().replace(/[^0-9a-z]/gi, ''));
 					}
 				}
 				if (pokedex[mon].hasOwnProperty("prevo")){
@@ -73,10 +74,12 @@ module.exports = {
 			
 			utils.sendLongMessage(bot, msg, sendMsg.join("\n"));
 		} else { //how does pokemon learn this move
-			if (moves[move] === undefined) {
+			let moveObj = utils.recognize(move, 'move');
+			if (moveObj.score) {
 				msg.channel.sendMessage("```" + `Move "${move}" not recognized. Please check your spelling.` + "```");
 				return;
 			}
+			move = moveObj.id;
 			
 			let canLearn = utils.learn(pokemon, move);
 			
@@ -88,7 +91,7 @@ module.exports = {
 				sendMsg.push(`${pokedex[pokemon].species} can learn ${moves[move].name} from:\n`);
 			}
 			
-		let methodName = {E:"egg", S:"event", D:"dream world", L:"level up", M:"TM/HM", T: "tutor", X:"egg, traded back", Y:"event, traded back", V:"VC transfer from gen1"};
+			let methodName = {E:"egg", S:"event", D:"dream world", L:"level up", M:"TM/HM", T: "tutor", X:"egg, traded back", Y:"event, traded back", V:"VC transfer from gen1"};
 			for (let gen in canLearn) {
 				sendMsg.push(`Gen${gen}:`);
 				for (let src in canLearn[gen]){

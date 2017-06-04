@@ -51,7 +51,7 @@ class CommandManager {
 					for (let name of files) {
 						if (name.endsWith('.js')) {
 							try {
-								name = name.replace(/\.js$/, '');
+								name = name.slice(0, -3);
 								let command = new Command(name, this.prefix, require(this.directory + name + '.js'));
 								this.commands[name] = command;
 							} catch (e) {
@@ -123,11 +123,10 @@ class CommandManager {
 		
 		suffix = suffix.join(" ");
 		
-		if (this.clean) {
-			//Need to preserve '-' for negative number input
-			//Cannot directly change utils.format because - is needed to parse Pokemon names
-			//e.g. Sableye-Mega
-			suffix = suffix.trim().toLowerCase().replace(/[^0-9a-z,=<>!\-]/gi, '')
+		if (this.clean) {			
+			//Preserve '-' for negative number input and Pokemon with dashes in their names
+			//Preserve operators for `filter` and `filterm` commands
+			suffix = suffix.toLowerCase().replace(/[^0-9a-z,=<>!\-]/gi, "");
 		}
 	
 		if (name === 'help') {
@@ -137,7 +136,12 @@ class CommandManager {
 			if (!serverSent) {
 				serverSent = "DM/PM Channel";
 			}
-			command.execute(bot, msg, suffix, flags);
+			
+			let result = command.process(bot, msg, suffix, flags);
+			if (result === "bad suffix") {
+				this.help(bot, msg, name, flags);
+			}
+				
 		}
 	}
 	

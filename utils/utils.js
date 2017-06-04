@@ -86,14 +86,18 @@ exports.checkUrlExists = function (urlchk) {
 }
 
 /**
-* Function that ensures that strings only contain alphanumeric characters or commas.
+* Function that ensures that strings only contain alphanumeric characters, operators, or commas.
 * @arg {String} 		str 				String to be formatted.
 * @returns {String} 		 				Formatted string.
 */
+/*
+Formatting will be done on a case-by-case basis rather than under a blanket function.
 var fmt = (str) => {
 	return str.trim().toLowerCase().replace(/[^0-9a-z,=<>!]/gi, '');
 }
 exports.fmt = fmt;
+*/
+
 
 /**
 * Helper command to split long messages into one or several DM/PMs
@@ -159,7 +163,7 @@ exports.sendLongMessage = (bot, msg, outputStr, forcePM, splitChar) => { //note 
 * @returns {Object}							Pokemon object, or null if no match found.
 */
 var parsePokemonName = (input) => {
-	input = fmt(input).replace('-', '');
+	input = input.replace('-', '');
 	let pokemon = pokedex[input];
 	if (pokemon === undefined){
 		let validPrefix = ["Mega", "Primal", "Alola"];
@@ -210,35 +214,37 @@ exports.parsePokemonName = parsePokemonName;
 * Guesses what a mispelled inquery might be
 * @arg {String} 		item 				User input.
 * @arg {String} 		forceType 			Force a recognization of a certain type. Types are "pokemon", "ability", "move", and "item".
-* @returns {Array}							An array that holds the best match name, the score of the best match, and the type of the best match.
+* @returns {Object}							An object that holds the best match (.item), best match name (.id), the score of the best match (.score), and the type of the best match (.type).
 */
 exports.recognize = (item, forceType) => {
+	item = item.toLowerCase().replace(/[^0-9a-z]/gi, '');
+	
 	//if forceType is not defined, always return true
 	let forceTypeCheck = (type) => { return (!forceType || type === forceType); }
 	
-	if (parsePokemonName(item) && forceTypeCheck("pokemon")){
-		return [parsePokemonName(item).species.toLowerCase(), 0, "pokemon"];
+	if (parsePokemonName(item) && forceTypeCheck('pokemon')) { 
+		let fit = {item: parsePokemonName(item), id: parsePokemonName(item).species.toLowerCase(), score: 0, type: 'pokemon'};
+		return fit;
 	}
 	
-	//iterate through our databases and get a best fit
-	let bestItem = null;
-	let bestScore = 99999; //arbitrary large number lol
-	let bestType = null;
+	//Iterate through our databases and get a best fit
+	let best = {item: null, id: null, score: Number.MAX_SAFE_INTEGER, type: null};
 		
-	["pokemon", "move", "ability", "item"].forEach((typing, ind) => {
+	['pokemon', 'move', 'ability', 'item'].forEach((typing, ind) => {
 		if (forceTypeCheck(typing)) {
 			let db = [pokedex, moves, abilities, items];
 			Object.keys(db[ind]).forEach((key) => {
-				if (levenshtein(item, key) < bestScore) {
-					bestItem = key;
-					bestScore = levenshtein(item, key);
-					bestType = typing;
+				if (levenshtein(item, key) < best.score) {
+					best.item = db[ind][key]
+					best.id = key;
+					best.score = levenshtein(item, key);
+					best.type = typing;
 				}
 			});
 		}	
 	});
 	
-	return [bestItem, bestScore, bestType];
+	return best;
 }
 
 /**
@@ -284,10 +290,10 @@ exports.learn = (pokemonId, moveId) => {
 				});
 			}
 		}
-		if (pokedex[mon].hasOwnProperty("baseSpecies")) {
+		if (pokedex[mon].hasOwnProperty('baseSpecies')) {
 			//As far as I know, Alolan formes are the only type of formes that do not share the same movepool from the base species.
 			if (pokedex[mon].forme != "Alola") {
-				moveRecurse(exports.fmt(pokedex[mon].baseSpecies), "baseSpecies");
+				moveRecurse(pokedex[mon].baseSpecies.toLowerCase().replace(/[^0-9a-z\-]/gi, ''), "baseSpecies");
 			}
 		}
 		if (pokedex[mon].hasOwnProperty("prevo")){

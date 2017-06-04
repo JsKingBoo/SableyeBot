@@ -36,29 +36,36 @@ module.exports = {
 		
 		let pokemon = utils.parsePokemonName(suffix);
 		if (pokemon === undefined){
+			
 			let helper = utils.recognize(suffix, "pokemon");
-			msg.channel.sendMessage("```" + `Pokemon "${suffix}" not recognized. Did you mean "${helper[0]}"?` + "```");
-			pokemon = pokedex[helper[0]];
+			msg.channel.sendMessage("```" + `Pokemon "${suffix}" not recognized. Did you mean "${helper.item.species}"?` + "```");
+			pokemon = helper.item;
 		}
-		
+
 		let sendMsg = `No. ${pokemon.num}: **${pokemon.species}**
 Typing: ${pokemon.types[0]} ${(pokemon.types[1] || "-")}
 Abilities: [1]: ${pokemon.abilities['0']}; [2]: ${(pokemon.abilities['1'] || "-")}; [H]: ${(pokemon.abilities.H || "-")}
 HP/ATK/DEF/SPA/SPD/SPE: ${pokemon.baseStats.hp}/${pokemon.baseStats.atk}/${pokemon.baseStats.def}/${pokemon.baseStats.spa}/${pokemon.baseStats.spd}/${pokemon.baseStats.spe}
 BST: ${(pokemon.baseStats.hp + pokemon.baseStats.atk + pokemon.baseStats.spa + pokemon.baseStats.spe + pokemon.baseStats.def + pokemon.baseStats.spd)}
 Introduced in gen${monGen(pokemon.num, pokemon.forme)}
-Weight: ${pokemon.weightkg} kg (${lowKickCalcs(pokemon.weightkg)} BP)`
+Weight: ${pokemon.weightkg} kg (${lowKickCalcs(pokemon.weightkg)} BP); Height: ${pokemon.heightm} m; BMI: ${Math.round((100*pokemon.weightkg)/(pokemon.heightm*pokemon.heightm))/100}`
 
-		if (formats_data[utils.fmt(pokemon.species)].tier != undefined) {
-			sendMsg += `\nTier: ${formats_data[utils.fmt(pokemon.species)].tier}`;
+		let pokemonId = pokemon.species.toLowerCase().replace(/[^0-9a-z,=<>!]/gi, '');
+		let baseSpeciesId = pokemon.baseSpecies;
+		if (baseSpeciesId) {
+			baseSpeciesId = baseSpeciesId.toLowerCase().replace(/[^0-9a-z,=<>!]/gi, '');
+		}
+		
+		if (formats_data[pokemonId].tier != undefined) {
+			sendMsg += `\nTier: ${formats_data[pokemonId].tier}`;
 		} else {
 			if (pokemon.baseSpecies != undefined){
-				sendMsg += `\nTier: ${formats_data[utils.fmt(pokemon.baseSpecies)].tier}`;
+				sendMsg += `\nTier: ${formats_data[baseSpeciesId].tier}`;
 			}
 		}
 		
 		if (pokemon.baseSpecies != undefined){
-			sendMsg += `\nBase species: ${pokedex[utils.fmt(pokemon.baseSpecies)].species}`;
+			sendMsg += `\nBase species: ${pokedex[baseSpeciesId].species}`;
 		}
 		if (pokemon.otherFormes != undefined){
 			let otherFormHelper = [];
@@ -68,20 +75,20 @@ Weight: ${pokemon.weightkg} kg (${lowKickCalcs(pokemon.weightkg)} BP)`
 			sendMsg += `\nOther formes: ${otherFormHelper.join(",")}`;
 		}
 		
-		if (formats_data[utils.fmt(pokemon.species)].requiredItem) {
-			sendMsg += `\nThis Pokemon must hold ${formats_data[utils.fmt(pokemon.species)].requiredItem} as an item.`;
+		if (formats_data[pokemonId].requiredItem) {
+			sendMsg += `\nThis Pokemon must hold ${formats_data[pokemonId].requiredItem} as an item.`;
 		}
-		if (formats_data[utils.fmt(pokemon.species)].requiredAbility) {
-			sendMsg += `\nThis Pokemon must have the ability ${formats_data[utils.fmt(pokemon.species)].requiredAbility}.`;
+		if (formats_data[pokemonId].requiredAbility) {
+			sendMsg += `\nThis Pokemon must have the ability ${formats_data[pokemonId].requiredAbility}.`;
 		}
-		if (formats_data[utils.fmt(pokemon.species)].unreleasedHidden) {
+		if (formats_data[pokemonId].unreleasedHidden) {
 			sendMsg += `\nThis Pokemon's hidden ability is unreleased.`;
 		}
 		
-		if (formats_data[utils.fmt(pokemon.species)].eventOnly) {
+		if (formats_data[pokemonId].eventOnly) {
 			sendMsg += `\nThis Pokemon is only available through events.`;
 		}
-		if (formats_data[utils.fmt(pokemon.species)].battleOnly) {
+		if (formats_data[pokemonId].battleOnly) {
 			sendMsg += `\nThis Pokemon is only available through battle.`;
 		}
 		

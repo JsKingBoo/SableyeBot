@@ -24,6 +24,10 @@ let operatorCompare = {
 	'!=': (a, b) => {return a != b}
 };
 
+let alphanumeric = (str) => {
+	return str.toLowerCase().replace(/[^0-9a-z]/gi, '');
+}
+
 let multiValueChecker = (operator, multiValue, value) => {
 	/*
 	Iterates through a list to check if it's equal. "=" is treated as OR while "<>" is treated as AND
@@ -33,18 +37,26 @@ let multiValueChecker = (operator, multiValue, value) => {
 	let isEqual = operatorCompare[operator](1, 1);
 	if (multiValue.constructor === [].constructor) {
 		for (let i = 0; i < multiValue.length; i++) {
-			if (utils.fmt(multiValue[i]+"") === utils.fmt(value+"")) {
+			if (alphanumeric(multiValue[i]+"") === alphanumeric(value+"")) {
 				return isEqual;
 			}
 		}
 	} else if (multiValue.constructor === {}.constructor) {
 		for (let i in multiValue) {
-			if (utils.fmt(multiValue[i]+"") === utils.fmt(value+"") || utils.fmt(i+"") === utils.fmt(value+"")) {
+			if (alphanumeric(multiValue[i]+"") === alphanumeric(value+"")) {
 				return isEqual;
 			}
 		}
 	}
 	return !isEqual;
+};
+
+let falseValues = {
+	'false': false,
+	'0': false,
+	'null': false,
+	'undefined': false,
+	'': false
 };
 
 module.exports = {
@@ -285,7 +297,7 @@ EXAMPLE: "//filterm bp>60,type=dark,cat=0"
 					if (typeof moveProp === "number") {
 						parameter.value = parseInt(parameter.value);
 					} else {
-						moveProp = utils.fmt(moveProp);
+						moveProp = alphanumeric(moveProp);
 					}
 					if (operatorCompare[parameter.operator](moveProp, parameter.value)) {
 						fitParameter++;
@@ -320,7 +332,7 @@ EXAMPLE: "//filterm bp>60,type=dark,cat=0"
 								found = false;
 								break;
 							}
-							let canLearn = utils.learn(utils.fmt(pokemon.species), move.id);
+							let canLearn = utils.learn(pokemon.species.toLowerCase().replace(/[^0-9a-z]/gi, ''), move.id);
 							
 							found = operatorCompare[parameter.operator](1, 1) ? (!!canLearn) : (!canLearn);
 							break;
@@ -406,8 +418,8 @@ EXAMPLE: "//filterm bp>60,type=dark,cat=0"
 					for (let sortIndex = 0; sortIndex < sortParameters.length; sortIndex++) {
 						let sorter = sortParameters[sortIndex];
 						moveMatch[fitIndex].sort(function(aa, bb) {
-							let a = moves[utils.fmt(aa)];
-							let b = moves[utils.fmt(bb)];
+							let a = moves[aa.toLowerCase().replace(/[^0-9a-z]/gi, '')];
+							let b = moves[bb.toLowerCase().replace(/[^0-9a-z]/gi, '')];
 							if (typeof a[sorter.value] === "number") { 
 								//Numerical - Ascending (<)
 								return b[sorter.value] - a[sorter.value];
@@ -424,7 +436,10 @@ EXAMPLE: "//filterm bp>60,type=dark,cat=0"
 							}
 						});
 					}
-					pushStatement = `List of moves that satisfy ${fitIndex} parameters:\n\n${moveMatch[fitIndex].join(", ")}`;
+					if (fitIndex != moveMatch.length - 1) {
+						pushStatement += "No move that satisfies ALL parameters found. ";
+					}
+					pushStatement += `List of moves that satisfy ${fitIndex} parameters:\n\n${moveMatch[fitIndex].join(", ")}`;
 					break;
 				}
 			}

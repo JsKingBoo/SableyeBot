@@ -32,6 +32,10 @@ let isBaseStat = (str) => {
 	return (stat.indexOf(str) >= 0);
 }
 
+let alphanumeric = (str) => {
+	return str.toLowerCase().replace(/[^0-9a-z]/gi, '');
+}
+
 let multiValueChecker = (operator, multiValue, value) => {
 	/*
 	Iterates through a list to check if it's equal. "=" is treated as OR while "<>" is treated as AND
@@ -41,13 +45,13 @@ let multiValueChecker = (operator, multiValue, value) => {
 	let isEqual = operatorCompare[operator](1, 1);
 	if (multiValue.constructor === [].constructor) {
 		for (let i = 0; i < multiValue.length; i++) {
-			if (utils.fmt(multiValue[i]+"") === utils.fmt(value+"")) {
+			if (alphanumeric(multiValue[i]+"") === alphanumeric(value+"")) {
 				return isEqual;
 			}
 		}
 	} else if (multiValue.constructor === {}.constructor) {
 		for (let i in multiValue) {
-			if (utils.fmt(multiValue[i]+"") === utils.fmt(value+"")) {
+			if (alphanumeric(multiValue[i]+"") === alphanumeric(value+"")) {
 				return isEqual;
 			}
 		}
@@ -164,7 +168,7 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 				continue;
 			}
 			
-			let customs = ["ability", "type", "monotype", "move", "hp", "atk", "def", "spa", "spd", "spe", "bst","evos","genderratio","egggroups","egggroup","hasprevo", "hasevo", "baseforme","otherformes","threshold","threshhold","health","attack","defense","specialattack","specialdefense","speed", "basestattotal","sort"];
+			let customs = ["ability","type","monotype","move","hp","atk","def","spa","spd","spe","bst","evos","genderratio","egggroups","egggroup","hasprevo","hasevo","baseforme","otherformes","threshold","threshhold","health","attack","defense","specialattack","specialdefense","speed","basestattotal","bmi","sort"];
 			if (customs.indexOf(parameterTemplate.key) >= 0) {
 				parameterTemplate.hasCustomParsing = true;
 			}
@@ -279,7 +283,7 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 						//pokeProp = parseInt(pokeProp);
 						parameter.value = parseInt(parameter.value);
 					} else {
-						pokeProp = utils.fmt(pokeProp);
+						pokeProp = alphanumeric(pokeProp);
 						//parameter.value = utils.fmt(parameter.value);
 					}
 					if (operatorCompare[parameter.operator](pokeProp, parameter.value)) {
@@ -305,7 +309,7 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 								break;
 							}
 							
-							let canLearn = utils.learn(utils.fmt(pokemon.species), move);
+							let canLearn = utils.learn(pokemon.species.toLowerCase().replace(/[^0-9a-z]/gi, ''), move);
 							if (flags.alola) {
 								if (canLearn) {
 									canLearn = !!canLearn['7'];
@@ -347,6 +351,10 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 								return;
 							case "sort":
 								return;
+							case "bmi":
+								let pokemonBMI = Math.round(pokemon.weightkg/(pokemon.heightm*pokemon.heightm));
+								found = operatorCompare[parameter.operator](pokemonBMI, parseInt(parameter.value));
+								break;
 							default:
 								break;
 					}
@@ -372,8 +380,8 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 					for (let sortIndex = 0; sortIndex < sortParameters.length; sortIndex++) {
 						let sorter = sortParameters[sortIndex];
 						speciesMatch[fitIndex].sort(function(aa, bb) {
-							let a = pokedex[utils.fmt(aa)];
-							let b = pokedex[utils.fmt(bb)];
+							let a = pokedex[aa.toLowerCase().replace(/[^0-9a-z]/gi, '')];
+							let b = pokedex[bb.toLowerCase().replace(/[^0-9a-z]/gi, '')];
 							//Numerical - Ascending (<)
 							if (isBaseStat(sorter.value)){
 								return b.baseStats[sorter.value] - a.baseStats[sorter.value];
@@ -391,7 +399,10 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 							}
 						});
 					}
-					pushStatement = `List of Pokemon that satisfy ${fitIndex} parameters:\n\n${speciesMatch[fitIndex].join(", ")}`;
+					if (fitIndex != speciesMatch.length - 1) {
+						pushStatement += "No Pokemon that satisfies ALL parameters found. ";
+					}
+					pushStatement += `List of Pokemon that satisfy ${fitIndex} parameters:\n\n${speciesMatch[fitIndex].join(", ")}`;
 					break;
 				}
 			}

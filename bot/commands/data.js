@@ -12,6 +12,13 @@ var movejs = require("./move.js");
 var itemjs = require("./item.js");
 var naturejs = require("./nature.js");
 
+//Preload
+let naturesArr = [];
+for (let bst in natures) {
+	for (let hnd in natures[bst]) {
+		naturesArr.push(natures[bst][hnd].toLowerCase());
+	}
+}
 
 module.exports = {
 	desc: "Helper command for informational commands.",
@@ -22,19 +29,7 @@ module.exports = {
 			return "bad suffix";
 		} 
 		
-		//preload this so it doesn't break
-		let isANature = false;
-		for (let bst in natures) {
-			let bbreak = false;
-			for (let hnd in natures[bst]) {
-				if (utils.fmt(natures[bst][hnd]) === suffix) {
-					isANature = true;
-				}
-			}
-			if (bbreak) { break; }
-		}
-		
-		if (isANature) {
+		if (naturesArr.indexOf(suffix) > -1) {
 			naturejs.process(bot, msg, suffix, flags);
 		} else if (utils.parsePokemonName(suffix)) {
 			pokedexjs.process(bot, msg, suffix, flags);
@@ -46,10 +41,10 @@ module.exports = {
 			itemjs.process(bot, msg, suffix, flags);					
 		} else {
 			let helper = utils.recognize(suffix);
-			msg.channel.sendMessage("```" + `Did not recognize "${suffix}". Did you mean "${helper[0]}"?` + "```");
+			msg.channel.sendMessage("```" + `Did not recognize "${suffix}". Did you mean "${helper.id}"?` + "```");
 			let infoCommands = [pokedexjs, abilityjs, movejs, itemjs];
-			let types = ["pokemon", "ability", "move", "item"];
-			infoCommands[types.indexOf(helper[2])].process(bot, msg, helper[0], flags);
+			let types = ['pokemon', 'ability', 'move', 'item'];
+			infoCommands[types.indexOf(helper.type)].process(bot, msg, helper.id, flags);
 		}
 		
 	}

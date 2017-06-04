@@ -22,7 +22,7 @@ module.exports = {
 			return;
 		}
 		let pokemonDisplay = pokemon.species;
-		pokemon = utils.fmt(pokemonDisplay);
+		pokemon = pokemonDisplay.toLowerCase().replace(/[^0-9a-z]/gi, '');
 		if (getSet.length === 1){
 			if (!formats_data[pokemon].eventPokemon) {
 				msg.channel.sendMessage("```" + `${pokemonDisplay} does not have any events.` + "```");

@@ -28,11 +28,10 @@ module.exports = {
 		
 		if (move === undefined){
 			let helper = utils.recognize(suffix, "move");
-			msg.channel.sendMessage("```" + `Move "${suffix}" not recognized. Did you mean "${helper[0]}"?` + "```");
-			move = moves[helper[0]];
+			msg.channel.sendMessage("```" + `Move "${suffix}" not recognized. Did you mean "${helper.id}"?` + "```");
+			move = helper.item
 		}
 
-		
 		let sendMsg = `**${move.name}**
 ${move.type}; ${move.category}
 `

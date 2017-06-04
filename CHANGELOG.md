@@ -1,3 +1,14 @@
+### 2.9.0 - 2017-06-17
+ * Add `test` mod command
+ * Add 'bmi' as a parameter to `filter`
+ * Add indicator when `filter` and `filterm` cannot find any items matching all parameters and threshold not specified
+ * Fix "bad suffix" returns not doing anything
+ * Fix resetting status and playing game after restart
+ * Fix `data` not actually preloading natures
+ * Fix `filterm` not recognizing false values
+ * Changed parsing: no longer a universal format string function
+ * Changed recognition to return an object rather than an array
+
 ##### 2.8.2 - 2017-05-17
  * Fix `sprite` not removing spaces
 

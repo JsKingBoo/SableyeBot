@@ -16,7 +16,6 @@ module.exports = {
 		Logger.forceSave()
 			.then((m) => {
 	
-				suffix = utils.fmt(suffix);
 				if (fs.existsSync(SAVE_FILE_DIR)) {
 					jsonfile.readFile(SAVE_FILE_DIR, function(err, data) {
 						if (err) {

@@ -17,7 +17,7 @@ module.exports = {
 		for (let bst in natures) {
 			let bbreak = false;
 			for (let hnd in natures[bst]) {
-				if (utils.fmt(natures[bst][hnd]) === nature) {
+				if (natures[bst][hnd].toLowerCase() === nature) {
 					boost = bst;
 					hindr = hnd;
 					bbreak = true;
@@ -29,8 +29,8 @@ module.exports = {
 		//is not a nature. check if it's a stat
 		if (boost === "" || hindr === ""){
 			suffix = suffix + ",";
-			boost = utils.fmt(suffix.split(",")[0]);
-			hindr = utils.fmt(suffix.split(",")[1]);
+			boost = suffix.split(",")[0];
+			hindr = suffix.split(",")[1];
 			if (!natures.hasOwnProperty(boost)){
 				msg.channel.sendMessage("```" + `Argument ${boost} not recognized.` + "```");
 				return;
