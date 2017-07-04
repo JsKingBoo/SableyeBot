@@ -17,7 +17,7 @@
 		"errorMessage": "```An unknown error has occured. If this is reproducable, please report this to the owner ASAP.```"
 	},
 	"misc": {
-		"playing_game": "Use //help for assistance",
+		"playing_game": "//help",
 		"avatar": "./logo.png"
 	}
 }

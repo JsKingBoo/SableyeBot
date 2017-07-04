@@ -168,7 +168,7 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 				continue;
 			}
 			
-			let customs = ["ability","type","monotype","move","hp","atk","def","spa","spd","spe","bst","evos","genderratio","egggroups","egggroup","hasprevo","hasevo","baseforme","otherformes","threshold","threshhold","health","attack","defense","specialattack","specialdefense","speed","basestattotal","bmi","sort"];
+			let customs = ["ability","type","monotype","move","hp","atk","def","spa","spd","spe","bst","evos","genderratio","egggroups","egggroup","hasprevo","hasevo","baseforme","otherformes","weaknesses","numweak","threshold","threshhold","health","attack","defense","specialattack","specialdefense","speed","basestattotal","bmi","sort"];
 			if (customs.indexOf(parameterTemplate.key) >= 0) {
 				parameterTemplate.hasCustomParsing = true;
 			}
@@ -215,6 +215,10 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 					case "baseforme":
 						parameterTemplate.key = "baseForme";
 						parameter.hasCustomParsing = false;
+						break;
+					case "weaknesses":
+					case "numweak":
+						parameterTemplate.key = "numWeak";
 						break;
 					case "threshhold":
 						parameterTemplate.key = "threshold";
@@ -355,6 +359,36 @@ NOTE: Some move and/or ability combinations are not compatible. Despite this, th
 								let pokemonBMI = Math.round(pokemon.weightkg/(pokemon.heightm*pokemon.heightm));
 								found = operatorCompare[parameter.operator](pokemonBMI, parseInt(parameter.value));
 								break;
+							 case "numWeak":
+								// Thanks stalruth ミ☆#3021...please make the pull request yourself next time ok xd
+                                // pokemon.types has the pokemon's types
+                                let types = Object.keys(typechart);
+                                let count = 0;
+                                for (let i = 0; i < types.length; i++) {	
+									let attackingType = types[i];
+                                    let multiplier = 1.0;
+                                    pokemon.types.forEach((ptype) => {
+                                        switch (typechart[ptype].damageTaken[attackingType]) {
+                                            case 1:
+                                                multiplier *= 2.0;
+                                                break;
+                                            case 2:
+                                                multiplier *= 0.5;
+                                                break;
+                                            case 3:
+                                                multiplier = 0;
+                                                break;
+                                            case 0:
+                                            default:
+                                                break;
+                                        }
+                                    });
+                                    if (multiplier > 1.0) {
+                                        count++;
+                                    }
+                                }
+                                found = operatorCompare[parameter.operator](count, parameter.value);
+                                break;
 							default:
 								break;
 					}

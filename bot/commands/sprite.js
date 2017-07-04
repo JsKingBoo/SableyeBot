@@ -23,10 +23,7 @@ module.exports = {
 		}
 		
 		//Base species + '-' + forme
-		//Clean extranneous '-' (Due to Kommo-o)
-		//                  ' ' (Due to Tapus)
-		//                  ':' (Due to Type:Null)
-		let name = ((pokemon.baseSpecies || pokemon.species).replace('-', '').replace(' ', '').replace(':', '').trim() + (pokemon.forme != null ? '-' + pokemon.forme : '')).toLowerCase();
+		let name = ((pokemon.baseSpecies || pokemon.species).replace(/[^0-9a-z]/gi, '') + (pokemon.forme != null ? '-' + pokemon.forme : '')).toLowerCase();
 		//There has to be a better way
 		
 		let url = 'http://play.pokemonshowdown.com/sprites/';
