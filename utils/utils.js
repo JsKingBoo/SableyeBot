@@ -162,8 +162,9 @@ exports.sendLongMessage = (bot, msg, outputStr, forcePM, splitChar) => { //note 
 * @arg {String} 		input 				User input.
 * @returns {Object}							Pokemon object, or null if no match found.
 */
+//TODO: Refactor this
 var parsePokemonName = (input) => {
-	input = input.replace('-', '');
+	input = input.replace(/\-/g, '');
 	let pokemon = pokedex[input];
 	if (pokemon === undefined){
 		let validPrefix = ["Mega", "Primal", "Alola"];

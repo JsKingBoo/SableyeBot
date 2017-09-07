@@ -1,3 +1,5 @@
+# This is the old repo! New repo here: https://github.com/JsKingBoo/SableyeBot3
+#
 # ![logo](logo.png "logo") 
 # SableyeBot
 ### Competitive Pokemon Discord bot
@@ -16,13 +18,6 @@ If you encounter any bugs or need help, create an issue on the issue tracker. Pl
  
 ## Contributing
 Want to help out? Fork this repository, make your changes, and send a pull request.
-Please try using a code style consistent with the rest of the project. This includes, but is not limited to:
-
- * For indentation, using tabs with a size of `4`
- * Always using brackets for `if` statements, and the opening bracket on the same line of the `if` statement
- * End lines with a semicolon
- * Using template literals with strings with variables
- 
 Do not worry too much over styling--I will look over your code and may change some lines anyways.
 
 ## Credits

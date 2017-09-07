@@ -45,7 +45,7 @@ class Command {
 		this.destroyFunction = cmd.destroy;
 
 		if (typeof cmd.initialize === "function") {
-			cmd.initialize(bot);
+			cmd.initialize();
 		}
 	}
 
